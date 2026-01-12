@@ -24,7 +24,7 @@ permalink: /tags/
       {% assign font_size = 1.0 %}
     {% endif %}
     
-    <a href="/tag/{{ tag_name | slugify }}/" 
+    <a href="#{{ tag_name | slugify }}" 
        class="tag-cloud" 
        style="font-size: {{ font_size }}em;"
        data-count="{{ tag_size }}">
@@ -33,40 +33,29 @@ permalink: /tags/
   {% endfor %}
 </div>
 
+<hr>
+
 <div class="tags-list">
   {% for tag in tags %}
     {% assign tag_name = tag[0] %}
     {% assign tag_posts = tag[1] %}
     
-    <div class="tag-section">
+    <div class="tag-section" id="{{ tag_name | slugify }}">
       <h2>
-        <a href="/tag/{{ tag_name | slugify }}/" class="tag-header">
-          <i class="fas fa-tag"></i> {{ tag_name }}
+        <a href="#{{ tag_name | slugify }}" class="tag-header">
+          {{ tag_name }}
         </a>
-        <span class="tag-count-badge">{{ tag_posts | size }} статей</span>
+        <span class="tag-count-badge">({{ tag_posts | size }} статей)</span>
       </h2>
       
-      <div class="tag-posts-preview">
-        {% for post in tag_posts limit:3 %}
-          <article class="tag-post-preview">
-            <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-            <div class="post-meta">
-              <time datetime="{{ post.date | date_to_xmlschema }}">
-                {{ post.date | date: "%d.%m.%Y" }}
-              </time>
-            </div>
-            <p>{{ post.excerpt | strip_html | truncatewords: 15 }}</p>
-          </article>
+      <ul class="tag-posts">
+        {% for post in tag_posts %}
+          <li>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+            <span class="post-date">— {{ post.date | date: "%d.%m.%Y" }}</span>
+          </li>
         {% endfor %}
-        
-        {% if tag_posts.size > 3 %}
-          <div class="view-all">
-            <a href="/tag/{{ tag_name | slugify }}/" class="btn-small">
-              Все статьи с этим тегом ({{ tag_posts.size }})
-            </a>
-          </div>
-        {% endif %}
-      </div>
+      </ul>
     </div>
   {% endfor %}
 </div>
