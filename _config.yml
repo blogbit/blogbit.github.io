@@ -23,10 +23,10 @@ repository               : "blogbit/blogbit.github.io"
 #                Дополнительную настройку можно выполнить, отредактировав /_includes/author-profile.html
 author:
   # Биографическая информация
-  avatar           : "profile.png"
-  name             : "ALEX"
+  avatar           : #"profile.png"
+  name             : #"ALEX"
   pronouns         : # пример: "она/её"  
-  bio              : "Делюсь тем, что мне действительно интересно"
+  bio              : #"Делюсь тем, что мне действительно интересно"
   location         : # "Земля"
   employer         : # "Университет"
   uri              : # URL
