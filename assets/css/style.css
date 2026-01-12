@@ -111,29 +111,37 @@ header {
     background-color: var(--primary-color);
 }
 
-/* Стили для ссылок в статьях */
-.post-content a {
+/* Общие стили для ссылок */
+a {
     color: var(--link-color);
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 1px;
 }
 
-.post-content a:hover {
+a:hover {
     color: var(--link-hover);
-    border-bottom-color: var(--link-color);
+    text-decoration: underline;
 }
 
-.page-content a {
-    color: var(--link-color);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    padding-bottom: 1px;
+/* Стили для тегов - как кнопки */
+.tag {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white !important;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    text-decoration: none !important;
+    margin: 3px 5px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.page-content a:hover {
-    color: var(--link-hover);
-    border-bottom-color: var(--link-color);
+.tag:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    color: white !important;
+    text-decoration: none !important;
 }
 
 /* Переключатель темы */
@@ -221,17 +229,6 @@ header {
     transform: translateY(-5px);
 }
 
-.post-preview h2 a,
-.post-preview h3 a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.post-preview h2 a:hover,
-.post-preview h3 a:hover {
-    color: var(--accent-color);
-}
-
 .post-meta {
     color: var(--secondary-color);
     font-size: 14px;
@@ -242,7 +239,7 @@ header {
     flex-wrap: wrap;
 }
 
-/* Теги - кликабельные */
+/* Теги в статьях */
 .post-tags {
     display: flex;
     flex-wrap: wrap;
@@ -250,39 +247,21 @@ header {
     margin-top: 10px;
 }
 
-.tag {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    display: inline-block;
-    transition: var(--transition);
-    border: none;
-    cursor: pointer;
-}
-
-.tag:hover {
-    background-color: var(--accent-color);
-    transform: translateY(-2px);
-    color: white;
-}
-
 .read-more {
     display: inline-block;
     color: var(--primary-color);
-    text-decoration: none;
     font-weight: bold;
     padding: 8px 16px;
     border: 2px solid var(--primary-color);
     border-radius: 4px;
     margin-top: 15px;
+    text-decoration: none !important;
 }
 
 .read-more:hover {
     background-color: var(--primary-color);
-    color: white;
+    color: white !important;
+    text-decoration: none !important;
 }
 
 /* Полный пост */
@@ -334,7 +313,7 @@ header {
     padding: 0;
 }
 
-/* Навигация между постами - КОМПАКТНАЯ */
+/* Навигация между постами */
 .post-navigation {
     display: flex;
     justify-content: space-between;
@@ -357,7 +336,6 @@ header {
     flex: 1;
     min-height: 60px;
     max-width: 200px;
-    transition: var(--transition);
 }
 
 .prev-post:hover,
@@ -365,6 +343,7 @@ header {
     background-color: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+    text-decoration: none;
 }
 
 .prev-post {
@@ -429,6 +408,7 @@ header {
 
 .related-card h3 a:hover {
     color: var(--accent-color);
+    text-decoration: underline;
 }
 
 .related-card .post-tags {
@@ -457,6 +437,7 @@ header {
 .pagination a:hover {
     background-color: var(--primary-color);
     color: white;
+    text-decoration: none;
 }
 
 .pagination-info {
@@ -484,6 +465,24 @@ header {
 .btn:hover {
     background-color: transparent;
     color: var(--primary-color);
+    text-decoration: none;
+}
+
+.btn-small {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.btn-small:hover {
+    background-color: transparent;
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .telegram-btn {
@@ -533,6 +532,7 @@ footer {
 .social-links a:hover {
     background-color: var(--primary-color);
     color: white;
+    text-decoration: none;
 }
 
 .telegram-link {
@@ -543,6 +543,7 @@ footer {
 
 .telegram-link:hover {
     background-color: #006699 !important;
+    color: white !important;
 }
 
 .tags-link {
@@ -553,6 +554,7 @@ footer {
 
 .tags-link:hover {
     background-color: #c0392b !important;
+    color: white !important;
 }
 
 /* Страница 404 */
@@ -597,6 +599,7 @@ footer {
     background-color: var(--accent-color);
     transform: translateY(-3px);
     color: white;
+    text-decoration: none;
 }
 
 .tag-count {
@@ -605,8 +608,12 @@ footer {
     margin-left: 3px;
 }
 
+.tags-list {
+    margin-top: 40px;
+}
+
 .tag-section {
-    margin: 40px 0;
+    margin: 30px 0;
     padding: 25px;
     background-color: var(--card-bg);
     border-radius: 8px;
@@ -617,6 +624,9 @@ footer {
     color: var(--primary-color);
     text-decoration: none;
     font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .tag-header:hover {
@@ -632,40 +642,76 @@ footer {
     margin-left: 10px;
 }
 
-.tag-posts {
-    list-style: none;
-    padding-left: 0;
+.tag-posts-preview {
     margin-top: 15px;
 }
 
-.tag-posts li {
-    margin: 12px 0;
-    padding: 12px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.tag-post-preview {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: var(--bg-color);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
 }
 
-.tag-posts li:last-child {
-    border-bottom: none;
-}
-
-.tag-posts li a {
-    color: var(--link-color);
+.tag-post-preview h3 a {
+    color: var(--primary-color);
     text-decoration: none;
-    font-weight: 500;
 }
 
-.tag-posts li a:hover {
-    color: var(--link-hover);
+.tag-post-preview h3 a:hover {
+    color: var(--accent-color);
     text-decoration: underline;
 }
 
-.post-date {
+.view-all {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Страница отдельного тега */
+.tag-page {
+    margin-bottom: 40px;
+}
+
+.tag-title {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tag-count {
     color: var(--secondary-color);
-    font-size: 0.9em;
-    white-space: nowrap;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.back-to-tags {
+    margin-bottom: 30px;
+}
+
+.tag-posts {
+    margin-top: 30px;
+}
+
+.tag-post {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.tag-post h2 a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.tag-post h2 a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
 }
 
 /* Адаптивность */
@@ -792,14 +838,14 @@ footer {
         justify-content: center;
     }
     
-    .tag-posts li {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+    .tag-section {
+        padding: 15px;
     }
     
-    .post-date {
-        align-self: flex-start;
+    .tag-cloud {
+        margin: 5px 8px;
+        padding: 6px 12px;
+        font-size: 0.9em;
     }
 }
 
@@ -830,13 +876,7 @@ footer {
         gap: 10px;
     }
     
-    .tag-section {
+    .tag-post {
         padding: 15px;
-    }
-    
-    .tag-cloud {
-        margin: 5px 8px;
-        padding: 6px 12px;
-        font-size: 0.9em;
     }
 }

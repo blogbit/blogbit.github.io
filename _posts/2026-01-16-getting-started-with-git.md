@@ -7,7 +7,9 @@ tags: [git, tutorial, introduction, version-control]
 excerpt: "Основы работы с системой контроля версий Git для начинающих разработчиков."
 ---
 
-Git - мощная система контроля версий, которую должен знать каждый разработчик.
+Git - мощная система контроля версий.
+
+**Общие теги с предыдущими статьями:** introduction, tutorial
 
 ## Основные команды Git:
 
@@ -19,7 +21,6 @@ git init
 ### 2. Добавление файлов
 ```bash
 git add .
-git add filename.txt
 ```
 
 ### 3. Коммит изменений
@@ -27,20 +28,9 @@ git add filename.txt
 git commit -m "Описание изменений"
 ```
 
-### 4. Работа с ветками
-```bash
-git branch feature/new-feature
-git checkout feature/new-feature
-git merge feature/new-feature
-```
-
-**Общие теги с предыдущими статьями:** introduction, tutorial
-
 ## Полезные ресурсы:
 - [Официальная документация Git](https://git-scm.com/doc)
-- [Интерактивный учебник по Git](https://learngitbranching.js.org/)
-- [Шпаргалка по Git командам](https://training.github.com/)
 
-Теперь "Вам может быть интересно" будет показывать статьи с тегами: introduction, tutorial, blog
+Теперь при клике на тег открывается отдельная страница со всеми статьями этого тега!
 
 Больше полезного контента в [Telegram канале ITfinds](https://t.me/ITfinds).

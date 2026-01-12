@@ -14,9 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Бургер-меню
     initBurgerMenu();
     
-    // Плавная прокрутка
-    initSmoothScroll();
-    
     // Подсветка активной навигации
     highlightActiveNav();
     
@@ -121,50 +118,6 @@ function initBurgerMenu() {
     }
 }
 
-// Плавная прокрутка
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            // Проверяем, является ли это якорем для тега
-            if (targetId.startsWith('#')) {
-                e.preventDefault();
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Подсветка активного тега
-                    highlightActiveTag(targetId);
-                }
-            }
-        });
-    });
-}
-
-// Подсветка активного тега при переходе по якорю
-function highlightActiveTag(tagId) {
-    // Убираем подсветку у всех тегов
-    document.querySelectorAll('.tag-section').forEach(section => {
-        section.style.boxShadow = '';
-    });
-    
-    // Добавляем подсветку активному тегу
-    const activeSection = document.querySelector(tagId);
-    if (activeSection) {
-        activeSection.style.boxShadow = '0 0 0 3px var(--primary-color)';
-        
-        // Убираем подсветку через 3 секунды
-        setTimeout(() => {
-            activeSection.style.boxShadow = '';
-        }, 3000);
-    }
-}
-
 // Подсветка активной навигации
 function highlightActiveNav() {
     const currentPath = window.location.pathname;
@@ -186,31 +139,12 @@ function initTags() {
     // Добавляем обработчики для всех тегов
     const tags = document.querySelectorAll('.tag');
     tags.forEach(tag => {
+        // Анимация при клике
         tag.addEventListener('click', function(e) {
-            // Добавляем небольшую анимацию при клике
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = '';
             }, 200);
-            
-            // Если это тег на странице тегов, плавно скроллим к секции
-            if (this.getAttribute('href') && this.getAttribute('href').includes('/tags/#')) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').split('#')[1];
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Временно подсвечиваем секцию
-                    targetElement.style.boxShadow = '0 0 0 3px var(--primary-color)';
-                    setTimeout(() => {
-                        targetElement.style.boxShadow = '';
-                    }, 2000);
-                }
-            }
         });
         
         // Эффект при наведении
@@ -227,6 +161,8 @@ function initTags() {
     const tagClouds = document.querySelectorAll('.tag-cloud');
     tagClouds.forEach(tag => {
         tag.addEventListener('mouseenter', function() {
+            const count = this.getAttribute('data-count') || '1';
+            this.title = `${count} статья(ей)`;
             this.style.transform = 'translateY(-3px) scale(1.05)';
         });
         
@@ -238,7 +174,7 @@ function initTags() {
 
 // Обработка ссылок в статьях
 function initArticleLinks() {
-    const articleLinks = document.querySelectorAll('.post-content a, .page-content a');
+    const articleLinks = document.querySelectorAll('.post-content a');
     articleLinks.forEach(link => {
         // Добавляем иконку для внешних ссылок
         if (link.hostname !== window.location.hostname && !link.classList.contains('no-icon')) {

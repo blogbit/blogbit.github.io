@@ -89,7 +89,7 @@
                             <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
                             <div class="post-tags">
                                 {% for tag in post.tags limit:3 %}
-                                <a href="/tags/#{{ tag | slugify }}" class="tag">{{ tag }}</a>
+                                <a href="/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
                                 {% endfor %}
                             </div>
                         </article>
@@ -115,7 +115,7 @@
                             <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
                             <div class="post-tags">
                                 {% for tag in post.tags limit:3 %}
-                                <a href="/tags/#{{ tag | slugify }}" class="tag">{{ tag }}</a>
+                                <a href="/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
                                 {% endfor %}
                             </div>
                         </article>
@@ -139,7 +139,7 @@
         {% if paginator.next_page %}
             <a href="{{ paginator.next_page_path }}" class="pagination-next">Вперед &raquo;</a>
         {% endif %}
-    </nav>
+</nav>
     {% endif %}
 
     <footer>

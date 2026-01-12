@@ -11,6 +11,9 @@ collections:
   posts:
     output: true
     permalink: /:categories/:year/:month/:day/:title/
+  tags:
+    output: true
+    permalink: /tag/:name/
 
 defaults:
   - scope:
@@ -18,6 +21,11 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+  - scope:
+      path: "_tags"
+      type: "tags"
+    values:
+      layout: "tag"
 
 author:
   name: "Ваше Имя"
@@ -49,6 +57,7 @@ plugins:
   - jekyll-paginate-v2
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-tagging
 
 exclude:
   - Gemfile
