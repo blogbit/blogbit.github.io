@@ -7,8 +7,8 @@
 # процесс сервера.
 
 # Основные настройки сайта
-locale                   : "en-US"
-site_theme               : "contrast" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
+locale                   : "ru-RU"
+site_theme               : "default" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
 title                    : "Записки IT-шника"
 title_separator          : "-"
 name                     : &name "ALEX"
@@ -57,7 +57,7 @@ author:
 
   # Социальные сети
   artstation       : # Имя пользователя
-  bluesky          : "bsky.app" # Замените на ваше имя пользователя Bluesky
+  bluesky          : #"bsky.app" # Замените на ваше имя пользователя Bluesky
   facebook         : # Имя пользователя
   flickr           : # Имя пользователя
   foursquare       : # Имя пользователя
@@ -125,7 +125,7 @@ staticman:
       options:
         format           : "iso8601" # "iso8601" (по умолчанию), "timestamp-seconds", "timestamp-milliseconds"
 atom_feed:
-  hide                   : false     # измените на true, чтобы скрыть RSS-ленту в подвале
+  hide                   : true     # измените на true, чтобы скрыть RSS-ленту в подвале
   path                   : # пусто (по умолчанию) использует feed.xml
 
 
@@ -138,7 +138,7 @@ yandex_site_verification :
 
 # Поделиться в соцсетях
 twitter:
-  username               : &twitter
+  username               : #&twitter
 facebook:
   username               :
   app_id                 :
