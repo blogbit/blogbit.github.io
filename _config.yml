@@ -8,7 +8,7 @@
 
 # Основные настройки сайта
 locale                   : "en-US"
-site_theme               : "dirt" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
+site_theme               : "contrast" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
 title                    : "Записки IT-шника"
 title_separator          : "-"
 name                     : &name "ALEX"
