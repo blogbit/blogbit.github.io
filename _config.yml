@@ -1,361 +1,47 @@
-# Добро пожаловать в Jekyll!
-#
-# Этот конфигурационный файл предназначен для настроек, влияющих на весь сайт,
-# значений, которые вы должны задать один раз и редко редактировать после этого.
-# По техническим причинам этот файл *НЕ* перезагружается автоматически при использовании
-# `jekyll serve -l -H localhost`. Если вы измените этот файл, перезапустите
-# процесс сервера.
+# Основные настройки
+title: "Мой блог"
+description: "Описание моего блога"
+baseurl: ""
+url: "https://example.com"
 
-# Основные настройки сайта
-locale                   : "ru-RU"
-site_theme               : "default" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
-title                    : "Записки IT-шника"
-title_separator          : "-"
-name                     : &name "ALEX"
-description              : &description "Академическое портфолио Вашего Имени"   # Обновите общим описанием вашего сайта, это значение по умолчанию, если оно не переопределено страницей
-url                      : https://blogbit.github.io/ # Базовое имя хоста и протокол для вашего сайта, например "https://[ваше имя пользователя GitHub].github.io",
-                                                           # или если у вас уже есть другая страница на GitHub, используйте "https://[ваше имя пользователя GitHub].github.io/[Название вашего репозитория]"
-baseurl                  : "" # подпуть вашего сайта, например "/blog"
-repository               : "blogbit/blogbit.github.io"
-
-# Автор сайта - следующие параметры управляют тем, что отображается как часть контента автора в боковой панели.
-#                Если поле пустое, значок и ссылка не появятся, в противном случае они будут показаны.
-#                Дополнительную настройку можно выполнить, отредактировав /_includes/author-profile.html
-author:
-  # Биографическая информация
-  avatar           : #"profile.png"
-  name             : #"ALEX"
-  pronouns         : # пример: "она/её"  
-  bio              : #"Делюсь тем, что мне действительно интересно"
-  location         : # "Земля"
-  employer         : # "Университет"
-  uri              : # URL
-  email            : # "none@example.org" 
-
-  # Академические сайты
-  academia         : # URL
-  arxiv            : # URL - Обновите правильной ссылкой на ваш профиль
-  googlescholar    : # URL
-  inspire-hep      : # URL
-  impactstory      : # URL
-  orcid            : # URL
-  semantic         : # URL
-  ssrn             : # URL
-  pubmed           : # URL
-  researchgate     : # URL
-  scopus           : # URL
-  zotero           : # URL
-
-
-  # Репозитории и разработка ПО
-  bitbucket        : # Имя пользователя - Обновите вашим именем пользователя на сайте
-  codepen          : # Имя пользователя
-  dribbble         : # Имя пользователя
-  github           : "blogbit"
-  kaggle           : # Имя пользователя  
-  stackoverflow    : # Номер пользователя или номер пользователя и имя (например, используйте "1" или "1/jeff-atwood")    
-
-  # Социальные сети
-  artstation       : # Имя пользователя
-  bluesky          : #"bsky.app" # Замените на ваше имя пользователя Bluesky
-  facebook         : # Имя пользователя
-  flickr           : # Имя пользователя
-  foursquare       : # Имя пользователя
-  goodreads        : # Имя пользователя
-  google_plus      : # Имя пользователя
-  keybase          : # Имя пользователя
-  instagram        : # Имя пользователя
-  lastfm           : # Имя пользователя
-  linkedin         : # Имя пользователя
-  mastodon         : # URL
-  medium           : # URL
-  pinterest        : # Имя пользователя
-  soundcloud       : # Имя пользователя
-  steam            : # Имя пользователя
-  telegram         : # URL
-  tumblr           : # Имя пользователя
-  twitter          : # Имя пользователя для X / Twitter
-  vine             : # Имя пользователя
-  weibo            : # Имя пользователя
-  wikipedia        : # Имя пользователя
-  xing             : # Имя пользователя
-  youtube          : # Имя пользователя
-  zhihu            : # Имя пользователя
-
-# Категории публикаций - следующий список категорий публикаций и их заголовков
-publication_category:
-  books:
-    title: 'Книги'
-  manuscripts:
-    title: 'Статьи в журналах'    
-  conferences:
-    title: 'Доклады на конференциях'
-
-# Настройки сайта
-teaser                   :  # имя файла заглавного изображения-заглушки, помещенного в /images/, для предпросмотра в социальных сетях
-breadcrumbs              : false # true, false (по умолчанию)
-words_per_minute         : 160
-future                   : true
-read_more                : "anabled" # если включено, добавляет ссылки "Читать далее" к отрывкам
-talkmap_link             : false      # измените на true, чтобы добавить ссылку на карту выступлений на странице talks
-comments:
-  provider               : # false (по умолчанию), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
-  disqus:
-    shortname            :
-  discourse:
-    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , например: meta.discourse.org
-  facebook:
-    appid                :
-    num_posts            : # 5 (по умолчанию)
-    colorscheme          : # "light" (по умолчанию), "dark"
-staticman:
-  allowedFields          : ['name', 'email', 'url', 'message']
-  branch                 : "gh-pages" # "master", "gh-pages"
-  commitMessage          : "Новый комментарий."
-  filename               : comment-{@timestamp}
-  format                 : "yml"
-  moderation             : true
-  path                   : "_data/comments/{options.slug}"
-  requiredFields         : ['name', 'email', 'message']
-  transforms:
-    email                : "md5"
-  generatedFields:
-    date:
-      type               : "date"
-      options:
-        format           : "iso8601" # "iso8601" (по умолчанию), "timestamp-seconds", "timestamp-milliseconds"
-atom_feed:
-  hide                   : true     # измените на true, чтобы скрыть RSS-ленту в подвале
-  path                   : # пусто (по умолчанию) использует feed.xml
-
-
-# Связанное с SEO
-google_site_verification :
-bing_site_verification   :
-alexa_site_verification  :
-yandex_site_verification :
-
-
-# Поделиться в соцсетях
-twitter:
-  username               : #&twitter
-facebook:
-  username               :
-  app_id                 :
-  publisher              :
-og_image                 :  # Изображение сайта по умолчанию для социальных сетей
-og_description           :  # Описание изображения сайта по умолчанию для социальных сетей
-# Для указания профилей в соцсетях
-# - https://developers.google.com/structured-data/customize/social-profiles
-social:
-  type                   : # Person или Organization (по умолчанию Person)
-  name                   : # Если имя пользователя или организации отличается от имени сайта
-  links: # Массив ссылок на профили в социальных сетях
-
-
-# Аналитика
-analytics:
-  provider               :  "false" # false (по умолчанию), "google", "google-universal", "google-analytics-4", "custom"
-  google:
-    tracking_id          :
-
-
-# Чтение файлов
-include:
-  - .htaccess
-  - _pages
-  - files
-exclude:
-  - "*.sublime-project"
-  - "*.sublime-workspace"
-  - .asset-cache
-  - .bundle
-  - .github
-  - .jekyll-assets-cache
-  - .sass-cache
-  - assets/js/_main.js
-  - assets/js/plugins
-  - assets/js/vendor
-  - CHANGELOG
-  - Capfile
-  - config
-  - Dockerfile
-  - Gemfile
-  - Gruntfile.js
-  - gulpfile.js
-  - LICENSE
-  - local
-  - log
-  - node_modules
-  - package.json*
-  - Rakefile
-  - README
-  - tmp
-  - vendor
-keep_files:
-  - .git
-  - .svn
-encoding: "utf-8"
-markdown_ext: "markdown,mkdown,mkdn,mkd,md"
-
-
-# Конвертация
+# Настройки сборки
 markdown: kramdown
-highlighter: rouge
-lsi: false
-excerpt_separator: "\n\n"
-incremental: false
+permalink: pretty
 
+# Настройки автора
+author:
+  name: "Ваше Имя"
+  email: "ваш@email.com"
+  twitter: "ваш-twitter"
+  telegram: "ITfinds"
 
-# Обработка Markdown
-kramdown:
-  input: GFM
-  hard_wrap: false
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
+# Навигация
+navigation:
+  - name: Главная
+    link: /
+  - name: Обо мне
+    link: /about.html
+  - name: Блог
+    link: /blog.html
+  - name: Контакты
+    link: /contact.html
 
+# Настройки пагинации
+paginate: 5
+paginate_path: "/blog/page:num/"
 
-# Эти настройки управляют типами коллекций, используемых шаблоном
-collections:
-  teaching:
-    output: true
-    permalink: /:collection/:path/
-  publications:
-    output: true
-    permalink: /:collection/:path/
-  portfolio:
-    output: true
-    permalink: /:collection/:path/
-  talks:
-    output: true
-    permalink: /:collection/:path/
-
-
-# Эти настройки управляют тем, как страницы и коллекции включаются в сайт
-defaults:
-  # _posts
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: true
-      share: true
-      related: true
-  # _pages
-  - scope:
-      path: ""
-      type: pages
-    values:
-      layout: single
-      author_profile: true
-  # _teaching
-  - scope:
-      path: ""
-      type: teaching
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
-  # _publications
-  - scope:
-      path: ""
-      type: publications
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
-  # _portfolio
-  - scope:
-      path: ""
-      type: portfolio
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comment: true
-  # _talks
-  - scope:
-      path: ""
-      type: talks
-    values:
-      layout: talk
-      author_profile: true
-      share: true
-
-
-# Sass/SCSS
-sass:
-  sass_dir: _sass
-  style: compressed # https://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
-
-
-# Вывод
-permalink: /:categories/:title/
-# paginate: 5 # количество постов для показа
-# paginate_path: /page:num/
-timezone: Etc/UTC # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
+# Telegram канал
+telegram_channel: "https://t.me/ITfinds"
 
 # Плагины
 plugins:
-  - jekyll-feed
-  - jekyll-gist
   - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-redirect-from
-  - jemoji
-
-# Имитация GitHub Pages с --safe
-whitelist:
   - jekyll-feed
-  - jekyll-gist
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-redirect-from
-  - jemoji
 
-
-# Архивы
-#  Тип
-#  - Совместимые с GitHub Pages страницы архивов, созданные с помощью Liquid ~> type: liquid (по умолчанию)
-#  - Страницы архивов плагина Jekyll Archives ~> type: jekyll-archives
-#  Путь (примеры)
-#  - Страница архива должна существовать по пути при использовании метода Liquid, иначе возможны
-#    сломанные ссылки (особенно при включенных breadcrumbs)
-#  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
-#  - <base_path/categories/my-awesome-category/index.html ~> path: /categories/
-#  - <base_path/my-awesome-category/index.html ~> path: /
-category_archive:
-  type: liquid
-  path: /categories/
-tag_archive:
-  type: liquid
-  path: /tags/
-# https://github.com/jekyll/jekyll-archives
-# jekyll-archives:
-#   enabled:
-#     - categories
-#     - tags
-#   layouts:
-#     category: archive-taxonomy
-#     tag: archive-taxonomy
-#   permalinks:
-#     category: /categories/:name/
-#     tag: /tags/:name/
-
-
-# Сжатие HTML
-# - https://jch.penibelst.de/
-compress_html:
-  clippings: all
-  ignore:
-    envs: development
+# Исключения из сборки
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
