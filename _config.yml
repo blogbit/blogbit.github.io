@@ -1,40 +1,40 @@
-# Welcome to Jekyll!
+# Добро пожаловать в Jekyll!
 #
-# This config file is meant for settings that affect your entire site, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# `jekyll serve -l -H localhost`. If you change this file, please restart the 
-# server process.
+# Этот конфигурационный файл предназначен для настроек, влияющих на весь сайт,
+# значений, которые вы должны задать один раз и редко редактировать после этого.
+# По техническим причинам этот файл *НЕ* перезагружается автоматически при использовании
+# `jekyll serve -l -H localhost`. Если вы измените этот файл, перезапустите
+# процесс сервера.
 
-# Basic Site Settings
+# Основные настройки сайта
 locale                   : "en-US"
-site_theme               : "default" # The available themes options are "default", "air", "sunrise", "mint", "dirt" and "contrast"
-title                    : "Your Name / Site Title"
+site_theme               : "default" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
+title                    : "Ваше Имя / Название Сайта"
 title_separator          : "-"
-name                     : &name "Your Name"
-description              : &description "Your Name's academic portfolio"   # Update this with a general description of your site, this is the default if not overridden by a page
-url                      : https://academicpages.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
-                                                           # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
-baseurl                  : "" # the subpath of your site, e.g. "/blog"
+name                     : &name "Ваше Имя"
+description              : &description "Академическое портфолио Вашего Имени"   # Обновите общим описанием вашего сайта, это значение по умолчанию, если оно не переопределено страницей
+url                      : https://academicpages.github.io # Базовое имя хоста и протокол для вашего сайта, например "https://[ваше имя пользователя GitHub].github.io",
+                                                           # или если у вас уже есть другая страница на GitHub, используйте "https://[ваше имя пользователя GitHub].github.io/[Название вашего репозитория]"
+baseurl                  : "" # подпуть вашего сайта, например "/blog"
 repository               : "academicpages/academicpages.github.io"
 
-# Site Author - The following control what appear as part of the author content on the side bar.
-#               If a field is blank the icon and link will not appear, otherwise it will be shown.
-#               Additional customization can be done by editing /_includes/author-profile.html
+# Автор сайта - следующие параметры управляют тем, что отображается как часть контента автора в боковой панели.
+#                Если поле пустое, значок и ссылка не появятся, в противном случае они будут показаны.
+#                Дополнительную настройку можно выполнить, отредактировав /_includes/author-profile.html
 author:
-  # Biographic information
+  # Биографическая информация
   avatar           : "profile.png"
-  name             : "Your Sidebar Name"
-  pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
-  location         : "Earth"
-  employer         : "Red Brick University"
+  name             : "Ваше Имя для Боковой Панели"
+  pronouns         : # пример: "она/её"  
+  bio              : "Краткая биография для левой боковой панели"
+  location         : "Земля"
+  employer         : "Краснокирпичный Университет"
   uri              : # URL
   email            : "none@example.org" 
 
-  # Academic websites
+  # Академические сайты
   academia         : # URL
-  arxiv            : # URL - Update with the correct link to your profile
+  arxiv            : # URL - Обновите правильной ссылкой на ваш профиль
   googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
   inspire-hep      : # URL
   impactstory      : # URL
@@ -47,71 +47,71 @@ author:
   zotero           : # URL
 
 
-  # Repositories and software development
-  bitbucket        : # Username - Update with your username on the site
-  codepen          : # Username
-  dribbble         : # Username
+  # Репозитории и разработка ПО
+  bitbucket        : # Имя пользователя - Обновите вашим именем пользователя на сайте
+  codepen          : # Имя пользователя
+  dribbble         : # Имя пользователя
   github           : "academicpages"
-  kaggle           : # Username  
-  stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
+  kaggle           : # Имя пользователя  
+  stackoverflow    : # Номер пользователя или номер пользователя и имя (например, используйте "1" или "1/jeff-atwood")    
 
-  # Social media
-  artstation       : # Username
-  bluesky          : "bsky.app" # Replace this with you Bluesky username
-  facebook         : # Username
-  flickr           : # Username
-  foursquare       : # Username
-  goodreads        : # Username
-  google_plus      : # Username
-  keybase          : # Username
-  instagram        : # Username
-  lastfm           : # Username
-  linkedin         : # Username
+  # Социальные сети
+  artstation       : # Имя пользователя
+  bluesky          : "bsky.app" # Замените на ваше имя пользователя Bluesky
+  facebook         : # Имя пользователя
+  flickr           : # Имя пользователя
+  foursquare       : # Имя пользователя
+  goodreads        : # Имя пользователя
+  google_plus      : # Имя пользователя
+  keybase          : # Имя пользователя
+  instagram        : # Имя пользователя
+  lastfm           : # Имя пользователя
+  linkedin         : # Имя пользователя
   mastodon         : # URL
   medium           : # URL
-  pinterest        : # Username
-  soundcloud       : # Username
-  steam            : # Username
+  pinterest        : # Имя пользователя
+  soundcloud       : # Имя пользователя
+  steam            : # Имя пользователя
   telegram         : # URL
-  tumblr           : # Username
-  twitter          : # Username for X / Twitter
-  vine             : # Username
-  weibo            : # Username
-  wikipedia        : # Username
-  xing             : # Username
-  youtube          : # Username
-  zhihu            : # Username
+  tumblr           : # Имя пользователя
+  twitter          : # Имя пользователя для X / Twitter
+  vine             : # Имя пользователя
+  weibo            : # Имя пользователя
+  wikipedia        : # Имя пользователя
+  xing             : # Имя пользователя
+  youtube          : # Имя пользователя
+  zhihu            : # Имя пользователя
 
-# Publication Category - The following the list of publication categories and their headings
+# Категории публикаций - следующий список категорий публикаций и их заголовков
 publication_category:
   books:
-    title: 'Books'
+    title: 'Книги'
   manuscripts:
-    title: 'Journal Articles'    
+    title: 'Статьи в журналах'    
   conferences:
-    title: 'Conference Papers'
+    title: 'Доклады на конференциях'
 
-# Site Settings
-teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews
-breadcrumbs              : false # true, false (default)
+# Настройки сайта
+teaser                   :  # имя файла заглавного изображения-заглушки, помещенного в /images/, для предпросмотра в социальных сетях
+breadcrumbs              : false # true, false (по умолчанию)
 words_per_minute         : 160
 future                   : true
-read_more                : "disabled" # if enabled, adds "Read more" links to excerpts
-talkmap_link             : false      #change to true to add link to talkmap on talks page
+read_more                : "disabled" # если включено, добавляет ссылки "Читать далее" к отрывкам
+talkmap_link             : false      # измените на true, чтобы добавить ссылку на карту выступлений на странице talks
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
+  provider               : # false (по умолчанию), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
   disqus:
     shortname            :
   discourse:
-    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
+    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , например: meta.discourse.org
   facebook:
     appid                :
-    num_posts            : # 5 (default)
-    colorscheme          : # "light" (default), "dark"
+    num_posts            : # 5 (по умолчанию)
+    colorscheme          : # "light" (по умолчанию), "dark"
 staticman:
   allowedFields          : ['name', 'email', 'url', 'message']
   branch                 : "gh-pages" # "master", "gh-pages"
-  commitMessage          : "New comment."
+  commitMessage          : "Новый комментарий."
   filename               : comment-{@timestamp}
   format                 : "yml"
   moderation             : true
@@ -123,44 +123,44 @@ staticman:
     date:
       type               : "date"
       options:
-        format           : "iso8601" # "iso8601" (default), "timestamp-seconds", "timestamp-milliseconds"
+        format           : "iso8601" # "iso8601" (по умолчанию), "timestamp-seconds", "timestamp-milliseconds"
 atom_feed:
-  hide                   : false     # change to true to hide the RSS feed in the footer
-  path                   : # blank (default) uses feed.xml
+  hide                   : false     # измените на true, чтобы скрыть RSS-ленту в подвале
+  path                   : # пусто (по умолчанию) использует feed.xml
 
 
-# SEO Related
+# Связанное с SEO
 google_site_verification :
 bing_site_verification   :
 alexa_site_verification  :
 yandex_site_verification :
 
 
-# Social Sharing
+# Поделиться в соцсетях
 twitter:
   username               : &twitter
 facebook:
   username               :
   app_id                 :
   publisher              :
-og_image                 :  # Social media default site image
-og_description           :  # Social media default site image description
-# For specifying social profiles
+og_image                 :  # Изображение сайта по умолчанию для социальных сетей
+og_description           :  # Описание изображения сайта по умолчанию для социальных сетей
+# Для указания профилей в соцсетях
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  type                   : # Person или Organization (по умолчанию Person)
+  name                   : # Если имя пользователя или организации отличается от имени сайта
+  links: # Массив ссылок на профили в социальных сетях
 
 
-# Analytics
+# Аналитика
 analytics:
-  provider               :  "false" # false (default), "google", "google-universal", "google-analytics-4", "custom"
+  provider               :  "false" # false (по умолчанию), "google", "google-universal", "google-analytics-4", "custom"
   google:
     tracking_id          :
 
 
-# Reading Files
+# Чтение файлов
 include:
   - .htaccess
   - _pages
@@ -199,7 +199,7 @@ encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
 
-# Conversion
+# Конвертация
 markdown: kramdown
 highlighter: rouge
 lsi: false
@@ -207,7 +207,7 @@ excerpt_separator: "\n\n"
 incremental: false
 
 
-# Markdown Processing
+# Обработка Markdown
 kramdown:
   input: GFM
   hard_wrap: false
@@ -219,7 +219,7 @@ kramdown:
   enable_coderay: false
 
 
-# These settings control the types of collections used by the template
+# Эти настройки управляют типами коллекций, используемых шаблоном
 collections:
   teaching:
     output: true
@@ -235,7 +235,7 @@ collections:
     permalink: /:collection/:path/
 
 
-# These settings control how pages and collections are included in the site
+# Эти настройки управляют тем, как страницы и коллекции включаются в сайт
 defaults:
   # _posts
   - scope:
@@ -298,14 +298,14 @@ sass:
   style: compressed # https://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
 
 
-# Outputting
+# Вывод
 permalink: /:categories/:title/
-# paginate: 5 # amount of posts to show
+# paginate: 5 # количество постов для показа
 # paginate_path: /page:num/
 timezone: Etc/UTC # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
-# Plugins
+# Плагины
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -314,7 +314,7 @@ plugins:
   - jekyll-redirect-from
   - jemoji
 
-# Mimic GitHub Pages with --safe
+# Имитация GitHub Pages с --safe
 whitelist:
   - jekyll-feed
   - jekyll-gist
@@ -324,13 +324,13 @@ whitelist:
   - jemoji
 
 
-# Archives
-#  Type
-#  - GitHub Pages compatible archive pages built with Liquid ~> type: liquid (default)
-#  - Jekyll Archives plugin archive pages ~> type: jekyll-archives
-#  Path (examples)
-#  - Archive page should exist at path when using Liquid method or you can
-#    expect broken links (especially with breadcrumbs enabled)
+# Архивы
+#  Тип
+#  - Совместимые с GitHub Pages страницы архивов, созданные с помощью Liquid ~> type: liquid (по умолчанию)
+#  - Страницы архивов плагина Jekyll Archives ~> type: jekyll-archives
+#  Путь (примеры)
+#  - Страница архива должна существовать по пути при использовании метода Liquid, иначе возможны
+#    сломанные ссылки (особенно при включенных breadcrumbs)
 #  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
 #  - <base_path/categories/my-awesome-category/index.html ~> path: /categories/
 #  - <base_path/my-awesome-category/index.html ~> path: /
@@ -353,7 +353,7 @@ tag_archive:
 #     tag: /tags/:name/
 
 
-# HTML Compression
+# Сжатие HTML
 # - https://jch.penibelst.de/
 compress_html:
   clippings: all
