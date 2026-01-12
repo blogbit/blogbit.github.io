@@ -16,8 +16,7 @@ layout: default
             <div class="post-tags">
                 <i class="fas fa-tags"></i>
                 {% for tag in page.tags %}
-                {% assign tag_url = tag | slugify %}
-                <a href="/blog/?tag={{ tag_url }}" class="tag" data-tag="{{ tag_url }}">{{ tag }}</a>
+                <a href="/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
                 {% endfor %}
             </div>
             {% endif %}
