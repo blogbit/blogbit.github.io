@@ -1,15 +1,15 @@
 :root {
     --bg-color: #ffffff;
     --text-color: #333333;
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --accent-color: #e74c3c;
+    --primary-color: #2ecc71;      /* Зеленый вместо синего */
+    --secondary-color: #27ae60;    /* Темно-зеленый */
+    --accent-color: #3498db;       /* Голубой вместо красного */
     --border-color: #e0e0e0;
     --card-bg: #f9f9f9;
     --header-bg: #f8f9fa;
     --footer-bg: #f1f1f1;
-    --link-color: #2980b9;
-    --link-hover: #1a5276;
+    --link-color: #2980b9;         /* Синий для ссылок */
+    --link-hover: #1a5276;         /* Темно-синий при наведении */
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
@@ -17,15 +17,15 @@
 [data-theme="dark"] {
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
-    --primary-color: #3498db;
-    --secondary-color: #7f8c8d;
-    --accent-color: #e74c3c;
+    --primary-color: #2ecc71;      /* Зеленый */
+    --secondary-color: #27ae60;    /* Темно-зеленый */
+    --accent-color: #3498db;       /* Голубой */
     --border-color: #444444;
     --card-bg: #2d2d2d;
     --header-bg: #252525;
     --footer-bg: #202020;
-    --link-color: #5dade2;
-    --link-hover: #85c1e9;
+    --link-color: #5dade2;         /* Светло-синий */
+    --link-hover: #85c1e9;         /* Голубой при наведении */
     --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -142,6 +142,11 @@ a:hover {
     transform: translateY(-2px);
     color: white !important;
     text-decoration: none !important;
+}
+
+.tag.active {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
 }
 
 /* Переключатель темы */
@@ -444,6 +449,23 @@ a:hover {
     color: var(--secondary-color);
 }
 
+/* Кнопка "Показать все" */
+.show-all-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: var(--accent-color);
+    color: white !important;
+    border-radius: 4px;
+    text-decoration: none !important;
+    font-size: 0.9em;
+}
+
+.show-all-btn:hover {
+    background-color: var(--primary-color);
+    color: white !important;
+    text-decoration: none !important;
+}
+
 /* Кнопки CTA */
 .cta {
     margin: 40px 0;
@@ -463,23 +485,6 @@ a:hover {
 }
 
 .btn:hover {
-    background-color: transparent;
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.btn-small {
-    display: inline-block;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    background-color: var(--primary-color);
-    color: white;
-    border: 1px solid var(--primary-color);
-    font-size: 0.9rem;
-}
-
-.btn-small:hover {
     background-color: transparent;
     color: var(--primary-color);
     text-decoration: none;
@@ -546,17 +551,6 @@ footer {
     color: white !important;
 }
 
-.tags-link {
-    background-color: var(--accent-color);
-    color: white !important;
-    border-color: var(--accent-color) !important;
-}
-
-.tags-link:hover {
-    background-color: #c0392b !important;
-    color: white !important;
-}
-
 /* Страница 404 */
 .error-container {
     text-align: center;
@@ -573,145 +567,6 @@ footer {
 .error-message {
     font-size: 24px;
     margin-bottom: 30px;
-}
-
-/* Страница тегов */
-.tags-cloud {
-    text-align: center;
-    margin: 30px 0;
-    padding: 20px;
-    background-color: var(--card-bg);
-    border-radius: 8px;
-}
-
-.tag-cloud {
-    display: inline-block;
-    margin: 8px 12px;
-    padding: 8px 16px;
-    background-color: var(--primary-color);
-    color: white;
-    text-decoration: none;
-    border-radius: 20px;
-    transition: var(--transition);
-}
-
-.tag-cloud:hover {
-    background-color: var(--accent-color);
-    transform: translateY(-3px);
-    color: white;
-    text-decoration: none;
-}
-
-.tag-count {
-    font-size: 0.8em;
-    opacity: 0.9;
-    margin-left: 3px;
-}
-
-.tags-list {
-    margin-top: 40px;
-}
-
-.tag-section {
-    margin: 30px 0;
-    padding: 25px;
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-}
-
-.tag-header {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 1.5em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.tag-header:hover {
-    text-decoration: underline;
-}
-
-.tag-count-badge {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.9em;
-    margin-left: 10px;
-}
-
-.tag-posts-preview {
-    margin-top: 15px;
-}
-
-.tag-post-preview {
-    margin: 15px 0;
-    padding: 15px;
-    background-color: var(--bg-color);
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-}
-
-.tag-post-preview h3 a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.tag-post-preview h3 a:hover {
-    color: var(--accent-color);
-    text-decoration: underline;
-}
-
-.view-all {
-    margin-top: 15px;
-    text-align: center;
-}
-
-/* Страница отдельного тега */
-.tag-page {
-    margin-bottom: 40px;
-}
-
-.tag-title {
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.tag-count {
-    color: var(--secondary-color);
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.back-to-tags {
-    margin-bottom: 30px;
-}
-
-.tag-posts {
-    margin-top: 30px;
-}
-
-.tag-post {
-    margin-bottom: 30px;
-    padding: 25px;
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-}
-
-.tag-post h2 a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.tag-post h2 a:hover {
-    color: var(--accent-color);
-    text-decoration: underline;
 }
 
 /* Адаптивность */
@@ -837,16 +692,6 @@ footer {
     .post-tags {
         justify-content: center;
     }
-    
-    .tag-section {
-        padding: 15px;
-    }
-    
-    .tag-cloud {
-        margin: 5px 8px;
-        padding: 6px 12px;
-        font-size: 0.9em;
-    }
 }
 
 @media (max-width: 480px) {
@@ -874,9 +719,5 @@ footer {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-    }
-    
-    .tag-post {
-        padding: 15px;
     }
 }

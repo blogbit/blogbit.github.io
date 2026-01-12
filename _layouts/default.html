@@ -30,13 +30,6 @@
                 </li>
                 {% endfor %}
                 
-                <!-- Ссылка на теги -->
-                <li class="nav-item">
-                    <a href="/tags/" {% if page.url == "/tags/" %}class="active"{% endif %}>
-                        Теги
-                    </a>
-                </li>
-                
                 <li class="nav-item theme-toggle-container">
                     <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
                         <i class="fas fa-moon theme-icon-dark"></i>
@@ -88,8 +81,9 @@
                             </div>
                             <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
                             <div class="post-tags">
-                                {% for tag in post.tags limit:3 %}
-                                <a href="/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
+                                {% for tag in post.tags %}
+                                {% assign tag_url = tag | slugify %}
+                                <a href="/blog/?tag={{ tag_url }}" class="tag" data-tag="{{ tag_url }}">{{ tag }}</a>
                                 {% endfor %}
                             </div>
                         </article>
@@ -114,8 +108,9 @@
                             </div>
                             <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
                             <div class="post-tags">
-                                {% for tag in post.tags limit:3 %}
-                                <a href="/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a>
+                                {% for tag in post.tags %}
+                                {% assign tag_url = tag | slugify %}
+                                <a href="/blog/?tag={{ tag_url }}" class="tag" data-tag="{{ tag_url }}">{{ tag }}</a>
                                 {% endfor %}
                             </div>
                         </article>
@@ -149,9 +144,6 @@
             <div class="social-links">
                 <a href="{{ site.telegram_channel }}" target="_blank" class="telegram-link">
                     <i class="fab fa-telegram"></i> Telegram канал
-                </a>
-                <a href="/tags/" class="tags-link">
-                    <i class="fas fa-tags"></i> Все теги
                 </a>
             </div>
         </div>
