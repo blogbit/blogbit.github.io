@@ -27,10 +27,9 @@ layout: default
         {{ content }}
     </div>
 
-    <!-- Навигация между постами -->
     <div class="post-navigation">
         {% if page.previous.url %}
-        <a href="{{ page.previous.url | relative_url }}" class="prev-post">
+        <a href="{{ page.previous.url }}" class="prev-post">
             <i class="fas fa-arrow-left"></i>
             <span class="nav-text">Предыдущая статья</span>
             <span class="nav-title">{{ page.previous.title | truncate: 40 }}</span>
@@ -38,7 +37,7 @@ layout: default
         {% endif %}
         
         {% if page.next.url %}
-        <a href="{{ page.next.url | relative_url }}" class="next-post">
+        <a href="{{ page.next.url }}" class="next-post">
             <span class="nav-text">Следующая статья</span>
             <span class="nav-title">{{ page.next.title | truncate: 40 }}</span>
             <i class="fas fa-arrow-right"></i>

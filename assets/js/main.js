@@ -11,8 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
         themeToggle.addEventListener('click', toggleTheme);
     }
     
+    // Бургер-меню
+    initBurgerMenu();
+    
     // Плавная прокрутка
     initSmoothScroll();
+    
+    // Подсветка активной навигации
+    highlightActiveNav();
 });
 
 // Работа с темой
@@ -25,13 +31,9 @@ function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
-    // Установка новой темы
     document.documentElement.setAttribute('data-theme', newTheme);
-    
-    // Сохранение в localStorage
     localStorage.setItem('theme', newTheme);
     
-    // Анимация
     const button = document.getElementById('theme-toggle');
     if (button) {
         button.style.transform = 'scale(1.1)';
@@ -40,7 +42,6 @@ function toggleTheme() {
         }, 150);
     }
     
-    // Уведомление для скринридеров
     announceThemeChange(newTheme);
 }
 
@@ -49,7 +50,6 @@ function announceThemeChange(theme) {
         ? 'Темная тема включена' 
         : 'Светлая тема включена';
     
-    // Создаем скрытый элемент для скринридеров
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', 'polite');
     announcement.setAttribute('aria-atomic', 'true');
@@ -66,6 +66,56 @@ function announceThemeChange(theme) {
     
     document.body.appendChild(announcement);
     setTimeout(() => announcement.remove(), 1000);
+}
+
+// Бургер-меню
+function initBurgerMenu() {
+    const burgerMenu = document.querySelector('.burger-menu');
+    const mainNav = document.querySelector('.main-nav');
+    
+    if (burgerMenu && mainNav) {
+        burgerMenu.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            
+            // Блокировка скролла при открытом меню
+            if (mainNav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Закрытие меню при клике на ссылку
+        const navLinks = document.querySelectorAll('.nav-item a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                burgerMenu.classList.remove('active');
+                mainNav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Закрытие меню при клике вне меню
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.main-nav') && 
+                !event.target.closest('.burger-menu') &&
+                mainNav.classList.contains('active')) {
+                burgerMenu.classList.remove('active');
+                mainNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Закрытие меню при нажатии Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && mainNav.classList.contains('active')) {
+                burgerMenu.classList.remove('active');
+                mainNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 }
 
 // Плавная прокрутка
@@ -90,7 +140,7 @@ function initSmoothScroll() {
 // Подсветка активной навигации
 function highlightActiveNav() {
     const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-menu a');
+    const navLinks = document.querySelectorAll('.nav-item a');
     
     navLinks.forEach(link => {
         const linkPath = link.getAttribute('href');
@@ -103,5 +153,23 @@ function highlightActiveNav() {
     });
 }
 
+// Обработка ссылок в статьях
+function initArticleLinks() {
+    const articleLinks = document.querySelectorAll('.post-content a, .page-content a');
+    articleLinks.forEach(link => {
+        // Добавляем иконку для внешних ссылок
+        if (link.hostname !== window.location.hostname && !link.classList.contains('no-icon')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+            
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-external-link-alt';
+            icon.style.marginLeft = '5px';
+            icon.style.fontSize = '0.8em';
+            link.appendChild(icon);
+        }
+    });
+}
+
 // Вызов при загрузке
-highlightActiveNav();
+initArticleLinks();

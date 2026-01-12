@@ -1,45 +1,35 @@
-# Основные настройки
 title: "Мой блог"
 description: "Описание моего блога"
 baseurl: ""
 url: "https://example.com"
 
-# Настройки сборки
 markdown: kramdown
 permalink: pretty
 
-# Настройки автора
 author:
   name: "Ваше Имя"
-  email: "ваш@email.com"
-  twitter: "ваш-twitter"
   telegram: "ITfinds"
 
-# Навигация
 navigation:
   - name: Главная
     link: /
   - name: Обо мне
-    link: /about.html
+    link: /about
   - name: Блог
-    link: /blog.html
+    link: /blog
   - name: Контакты
-    link: /contact.html
+    link: /contact
 
-# Настройки пагинации
 paginate: 5
 paginate_path: "/blog/page:num/"
 
-# Telegram канал
 telegram_channel: "https://t.me/ITfinds"
 
-# Плагины
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
 
-# Исключения из сборки
 exclude:
   - Gemfile
   - Gemfile.lock
