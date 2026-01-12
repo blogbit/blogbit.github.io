@@ -11,7 +11,7 @@ locale                   : "en-US"
 site_theme               : "sunrise" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
 title                    : "Записки IT-шника"
 title_separator          : "-"
-name                     : &name "Ваше Имя"
+name                     : &name "ALEX"
 description              : &description "Академическое портфолио Вашего Имени"   # Обновите общим описанием вашего сайта, это значение по умолчанию, если оно не переопределено страницей
 url                      : https://blogbit.github.io/ # Базовое имя хоста и протокол для вашего сайта, например "https://[ваше имя пользователя GitHub].github.io",
                                                            # или если у вас уже есть другая страница на GitHub, используйте "https://[ваше имя пользователя GitHub].github.io/[Название вашего репозитория]"
@@ -24,7 +24,7 @@ repository               : "blogbit/blogbit.github.io"
 author:
   # Биографическая информация
   avatar           : "profile.png"
-  name             : "Ваше Имя для Боковой Панели"
+  name             : "ALEX"
   pronouns         : # пример: "она/её"  
   bio              : "Делюсь тем, что мне действительно интересно"
   location         : # "Земля"
