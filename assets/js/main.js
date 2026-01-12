@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Подсветка активной навигации
     highlightActiveNav();
     
-    // Обработка тегов на странице блога
-    initBlogTags();
+    // Обработка тегов
+    initTags();
 });
 
 // Работа с темой
@@ -134,32 +134,17 @@ function highlightActiveNav() {
     });
 }
 
-// Обработка тегов на странице блога
-function initBlogTags() {
-    // Обработка тегов на странице блога
-    const blogTags = document.querySelectorAll('.post-tags .tag');
-    blogTags.forEach(tag => {
+// Обработка тегов
+function initTags() {
+    // Добавляем обработчики для всех тегов
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+        // Анимация при клике
         tag.addEventListener('click', function(e) {
-            if (this.getAttribute('href') && this.getAttribute('href').includes('/blog/?tag=')) {
-                e.preventDefault();
-                
-                // Анимация нажатия
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 200);
-                
-                // Получаем тег из data-атрибута
-                const tagValue = this.getAttribute('data-tag');
-                if (tagValue) {
-                    // Обновляем URL с параметром тега
-                    const newUrl = `/blog/?tag=${tagValue}`;
-                    window.history.pushState({ tag: tagValue }, '', newUrl);
-                    
-                    // Фильтруем статьи
-                    filterArticlesByTag(tagValue);
-                }
-            }
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
         });
         
         // Эффект при наведении
@@ -172,101 +157,19 @@ function initBlogTags() {
         });
     });
     
-    // Проверяем, есть ли тег в URL при загрузке страницы
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedTag = urlParams.get('tag');
-    
-    if (selectedTag) {
-        // Ждем немного, чтобы DOM полностью загрузился
-        setTimeout(() => {
-            filterArticlesByTag(selectedTag);
-        }, 100);
-    }
-}
-
-// Фильтрация статей по тегу
-function filterArticlesByTag(tag) {
-    // Находим все статьи и теги
-    const articles = document.querySelectorAll('.post-preview');
-    const allTags = document.querySelectorAll('.tag');
-    
-    // Сбрасываем все активные теги
-    allTags.forEach(t => t.classList.remove('active'));
-    
-    // Активируем выбранный тег
-    document.querySelectorAll(`.tag[data-tag="${tag}"]`).forEach(t => {
-        t.classList.add('active');
+    // Обработка облака тегов
+    const tagClouds = document.querySelectorAll('.tag-cloud');
+    tagClouds.forEach(tag => {
+        tag.addEventListener('mouseenter', function() {
+            const count = this.getAttribute('data-count') || '1';
+            this.title = `${count} статья(ей)`;
+            this.style.transform = 'translateY(-3px) scale(1.05)';
+        });
+        
+        tag.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
     });
-    
-    // Счетчик видимых статей
-    let visibleCount = 0;
-    
-    // Фильтруем статьи
-    articles.forEach(article => {
-        const articleTags = Array.from(article.querySelectorAll('.tag')).map(t => 
-            t.getAttribute('data-tag')
-        );
-        
-        if (articleTags.includes(tag)) {
-            article.style.display = 'block';
-            visibleCount++;
-        } else {
-            article.style.display = 'none';
-        }
-    });
-    
-    // Обновляем заголовок
-    const title = document.querySelector('.content h1');
-    if (title && tag) {
-        const tagName = document.querySelector(`.tag[data-tag="${tag}"]`)?.textContent || tag;
-        title.textContent = `Статьи с тегом: ${tagName}`;
-        
-        // Проверяем, есть ли уже кнопка "Показать все"
-        let showAllBtn = document.querySelector('.show-all-btn');
-        
-        if (!showAllBtn) {
-            // Добавляем кнопку "Показать все"
-            showAllBtn = document.createElement('a');
-            showAllBtn.href = '/blog/';
-            showAllBtn.className = 'btn show-all-btn';
-            showAllBtn.innerHTML = '<i class="fas fa-times"></i> Показать все статьи';
-            showAllBtn.style.marginLeft = '20px';
-            showAllBtn.style.fontSize = '0.9em';
-            title.parentNode.insertBefore(showAllBtn, title.nextSibling);
-        }
-    }
-    
-    // Обновляем пагинацию
-    updatePaginationForFilter(visibleCount);
-}
-
-// Обновление пагинации при фильтрации
-function updatePaginationForFilter(visibleCount) {
-    const pagination = document.querySelector('.pagination');
-    if (pagination) {
-        if (visibleCount === 0) {
-            pagination.style.display = 'none';
-            // Показываем сообщение, если нет статей
-            const noResults = document.createElement('p');
-            noResults.className = 'no-results';
-            noResults.textContent = 'Нет статей с выбранным тегом.';
-            noResults.style.textAlign = 'center';
-            noResults.style.color = 'var(--secondary-color)';
-            noResults.style.marginTop = '40px';
-            
-            const content = document.querySelector('.content');
-            if (content && !document.querySelector('.no-results')) {
-                content.appendChild(noResults);
-            }
-        } else {
-            pagination.style.display = 'flex';
-            // Убираем сообщение, если оно есть
-            const noResults = document.querySelector('.no-results');
-            if (noResults) {
-                noResults.remove();
-            }
-        }
-    }
 }
 
 // Обработка ссылок в статьях
@@ -348,45 +251,3 @@ function initPostNavigation() {
 
 // Вызов при загрузке
 initPostNavigation();
-
-// Обработка истории браузера для фильтрации тегов
-window.addEventListener('popstate', function(event) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedTag = urlParams.get('tag');
-    
-    if (selectedTag) {
-        filterArticlesByTag(selectedTag);
-    } else {
-        // Показываем все статьи
-        document.querySelectorAll('.post-preview').forEach(article => {
-            article.style.display = 'block';
-        });
-        
-        // Сбрасываем активные теги
-        document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-        
-        // Восстанавливаем заголовок
-        const title = document.querySelector('.content h1');
-        if (title) {
-            title.textContent = 'Все записи блога';
-            
-            // Убираем кнопку "Показать все"
-            const showAllBtn = document.querySelector('.show-all-btn');
-            if (showAllBtn) {
-                showAllBtn.remove();
-            }
-        }
-        
-        // Показываем пагинацию
-        const pagination = document.querySelector('.pagination');
-        if (pagination) {
-            pagination.style.display = 'flex';
-        }
-        
-        // Убираем сообщение, если оно есть
-        const noResults = document.querySelector('.no-results');
-        if (noResults) {
-            noResults.remove();
-        }
-    }
-});
