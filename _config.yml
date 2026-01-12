@@ -9,7 +9,7 @@
 # Основные настройки сайта
 locale                   : "en-US"
 site_theme               : "air" # Доступные варианты тем: "default", "air", "sunrise", "mint", "dirt" и "contrast"
-title                    : "Ваше Имя / Название Сайта"
+title                    : "Записки IT-шника"
 title_separator          : "-"
 name                     : &name "Ваше Имя"
 description              : &description "Академическое портфолио Вашего Имени"   # Обновите общим описанием вашего сайта, это значение по умолчанию, если оно не переопределено страницей
@@ -26,11 +26,11 @@ author:
   avatar           : "profile.png"
   name             : "Ваше Имя для Боковой Панели"
   pronouns         : # пример: "она/её"  
-  bio              : "Краткая биография для левой боковой панели"
-  location         : "Земля"
-  employer         : "Университет"
+  bio              : "Делюсь тем, что мне действительно интересно"
+  location         : # "Земля"
+  employer         : # "Университет"
   uri              : # URL
-  email            : "none@example.org" 
+  email            : # "none@example.org" 
 
   # Академические сайты
   academia         : # URL
