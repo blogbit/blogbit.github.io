@@ -239,6 +239,34 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Теги - кликабельные */
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.tag {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    color: white;
 }
 
 .read-more {
@@ -267,21 +295,6 @@ header {
 .post-title {
     color: var(--primary-color);
     margin-bottom: 15px;
-}
-
-.post-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.tag {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
 }
 
 /* Контент статьи */
@@ -314,6 +327,65 @@ header {
     border-radius: 6px;
     overflow-x: auto;
     margin: 20px 0;
+}
+
+.post-content pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Навигация между постами - КОМПАКТНАЯ */
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color);
+    gap: 15px;
+}
+
+.prev-post,
+.next-post {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    flex: 1;
+    min-height: 60px;
+    max-width: 200px;
+    transition: var(--transition);
+}
+
+.prev-post:hover,
+.next-post:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.prev-post {
+    text-align: left;
+    justify-content: flex-start;
+}
+
+.next-post {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.nav-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 /* Вам может быть интересно */
@@ -359,54 +431,8 @@ header {
     color: var(--accent-color);
 }
 
-/* Навигация между постами */
-.post-navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
-    padding-top: 25px;
-    border-top: 1px solid var(--border-color);
-}
-
-.prev-post,
-.next-post {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--primary-color);
-    padding: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    flex: 1;
-    margin: 0 10px;
-}
-
-.prev-post:hover,
-.next-post:hover {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-}
-
-.prev-post {
-    text-align: left;
-}
-
-.next-post {
-    text-align: right;
-    justify-content: flex-end;
-}
-
-.nav-text {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.nav-title {
-    font-weight: bold;
-    display: block;
-    margin-top: 5px;
+.related-card .post-tags {
+    margin-top: 15px;
 }
 
 /* Пагинация */
@@ -431,6 +457,10 @@ header {
 .pagination a:hover {
     background-color: var(--primary-color);
     color: white;
+}
+
+.pagination-info {
+    color: var(--secondary-color);
 }
 
 /* Кнопки CTA */
@@ -515,6 +545,16 @@ footer {
     background-color: #006699 !important;
 }
 
+.tags-link {
+    background-color: var(--accent-color);
+    color: white !important;
+    border-color: var(--accent-color) !important;
+}
+
+.tags-link:hover {
+    background-color: #c0392b !important;
+}
+
 /* Страница 404 */
 .error-container {
     text-align: center;
@@ -531,6 +571,101 @@ footer {
 .error-message {
     font-size: 24px;
     margin-bottom: 30px;
+}
+
+/* Страница тегов */
+.tags-cloud {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+}
+
+.tag-cloud {
+    display: inline-block;
+    margin: 8px 12px;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: var(--transition);
+}
+
+.tag-cloud:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-3px);
+    color: white;
+}
+
+.tag-count {
+    font-size: 0.8em;
+    opacity: 0.9;
+    margin-left: 3px;
+}
+
+.tag-section {
+    margin: 40px 0;
+    padding: 25px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.tag-header {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+.tag-header:hover {
+    text-decoration: underline;
+}
+
+.tag-count-badge {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.tag-posts {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.tag-posts li {
+    margin: 12px 0;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tag-posts li:last-child {
+    border-bottom: none;
+}
+
+.tag-posts li a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.tag-posts li a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.post-date {
+    color: var(--secondary-color);
+    font-size: 0.9em;
+    white-space: nowrap;
 }
 
 /* Адаптивность */
@@ -606,20 +741,26 @@ footer {
         margin-top: 15px;
     }
     
-    .related-grid {
-        grid-template-columns: 1fr;
-    }
-    
+    /* Компактные кнопки навигации между постами */
     .post-navigation {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
     }
     
     .prev-post,
     .next-post {
-        margin: 0;
-        text-align: center !important;
+        max-width: 100%;
         justify-content: center !important;
+        text-align: center !important;
+    }
+    
+    .prev-post i,
+    .next-post i {
+        display: none;
+    }
+    
+    .related-grid {
+        grid-template-columns: 1fr;
     }
     
     .social-links {
@@ -646,6 +787,20 @@ footer {
     .error-message {
         font-size: 20px;
     }
+    
+    .post-tags {
+        justify-content: center;
+    }
+    
+    .tag-posts li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .post-date {
+        align-self: flex-start;
+    }
 }
 
 @media (max-width: 480px) {
@@ -667,5 +822,21 @@ footer {
     
     .post-content {
         font-size: 1rem;
+    }
+    
+    .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .tag-section {
+        padding: 15px;
+    }
+    
+    .tag-cloud {
+        margin: 5px 8px;
+        padding: 6px 12px;
+        font-size: 0.9em;
     }
 }

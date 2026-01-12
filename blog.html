@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Блог
-permalink: /blog
+permalink: /blog/
 pagination:
   enabled: true
 ---
@@ -17,27 +17,36 @@ pagination:
           {{ post.date | date: "%d.%m.%Y" }}
         </time>
         <span class="author">{{ site.author.name }}</span>
+        {% if post.tags.size > 0 %}
+        <div class="post-tags">
+          {% for tag in post.tags %}
+          <a href="/tags/#{{ tag | slugify }}" class="tag">{{ tag }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
       <div class="post-excerpt">
-        {{ post.excerpt | truncatewords: 30 }}
+        {{ post.excerpt }}
       </div>
       <a href="{{ post.url }}" class="read-more">Читать далее</a>
     </article>
+  {% else %}
+    <p>Пока нет статей в блоге.</p>
   {% endfor %}
 </div>
 
 {% if paginator.total_pages > 1 %}
 <nav class="pagination">
     {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path }}">&laquo; Назад</a>
+        <a href="{{ paginator.previous_page_path }}" class="pagination-prev">&laquo; Назад</a>
     {% endif %}
 
-    <span class="page-number">
+    <span class="pagination-info">
         Страница {{ paginator.page }} из {{ paginator.total_pages }}
     </span>
 
     {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path }}">Вперед &raquo;</a>
+        <a href="{{ paginator.next_page_path }}" class="pagination-next">Вперед &raquo;</a>
     {% endif %}
 </nav>
 {% endif %}

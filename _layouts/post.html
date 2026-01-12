@@ -16,7 +16,7 @@ layout: default
             <div class="post-tags">
                 <i class="fas fa-tags"></i>
                 {% for tag in page.tags %}
-                <span class="tag">{{ tag }}</span>
+                <a href="/tags/#{{ tag | slugify }}" class="tag">{{ tag }}</a>
                 {% endfor %}
             </div>
             {% endif %}
@@ -31,15 +31,17 @@ layout: default
         {% if page.previous.url %}
         <a href="{{ page.previous.url }}" class="prev-post">
             <i class="fas fa-arrow-left"></i>
-            <span class="nav-text">Предыдущая статья</span>
-            <span class="nav-title">{{ page.previous.title | truncate: 40 }}</span>
+            <div class="nav-content">
+                <span class="nav-label">Предыдущая статья</span>
+            </div>
         </a>
         {% endif %}
         
         {% if page.next.url %}
         <a href="{{ page.next.url }}" class="next-post">
-            <span class="nav-text">Следующая статья</span>
-            <span class="nav-title">{{ page.next.title | truncate: 40 }}</span>
+            <div class="nav-content">
+                <span class="nav-label">Следующая статья</span>
+            </div>
             <i class="fas fa-arrow-right"></i>
         </a>
         {% endif %}
