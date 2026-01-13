@@ -23,14 +23,14 @@ repository               : "blogbit/blogbit.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
-  name             : "Alex"
-  pronouns         : # example: "she/her"  
-  bio              : "Краткая биография для левой боковой панели"
-  location         : "Планета Земля"
-  employer         : "Red Brick University"
-  uri              : # URL
-  email            : "none@example.org" 
+  avatar           : false
+  name             : false
+  pronouns         : false 
+  bio              : false
+  location         : false
+  employer         : false
+  uri              : false
+  email            : false
 
   # Academic websites
   academia         : # URL
@@ -244,10 +244,10 @@ defaults:
     values:
       layout: single
       author_profile: false
-      read_time: true
-      comments: true
-      share: true
-      related: true
+      read_time: false
+      comments: false
+      share: false
+      related: false
   # _pages
   - scope:
       path: ""
