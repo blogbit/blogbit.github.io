@@ -23,14 +23,14 @@ repository               : "blogbit/blogbit.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : false
-  name             : false
-  pronouns         : false 
-  bio              : false
-  location         : false
-  employer         : false
-  uri              : false
-  email            : false
+  avatar           : "profile.png"
+  name             : "Alex"
+  pronouns         : # example: "she/her"  
+  bio              : "Краткая биография для левой боковой панели"
+  location         : "Планета Земля"
+  employer         : "Red Brick University"
+  uri              : # URL
+  email            : "none@example.org" 
 
   # Academic websites
   academia         : # URL
