@@ -24,10 +24,10 @@ repository               : "blogbit/blogbit.github.io"
 author:
   # Biographic information
   avatar           : "profile.png"
-  name             : "Your Sidebar Name"
+  name             : "Alex"
   pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
-  location         : "Earth"
+  bio              : "Краткая биография для левой боковой панели"
+  location         : "Планета Земля"
   employer         : "Red Brick University"
   uri              : # URL
   email            : "none@example.org" 
