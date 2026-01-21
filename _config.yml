@@ -1,50 +1,25 @@
-# Site settings
-title: "Clean Blog"
-email: "your-email@example.com"
-description: "A Clean Blog Theme for Jekyll"
-baseurl: "" # подпуть, если сайт в поддиректории
-url: "https://yourdomain.com" # основной домен
+title:              Clean Blog
+email:              your-email@example.com
+description:        A Blog Theme by Start Bootstrap
+author:             Start Bootstrap
+baseurl:            "/startbootstrap-clean-blog-jekyll"
+url:                "https://startbootstrap.github.io"
 
-# Author settings
-author: "Start Bootstrap"
-twitter_username: SBootstrap
-github_username: StartBootstrap
-facebook_username: StartBootstrap
+# Social Profiles
+twitter_username:   SBootstrap
+github_username:    StartBootstrap
+facebook_username:  StartBootstrap
+instagram_username:  
+linkedin_username:
+
+# Add your google-analytics ID here to activate google analytics
+google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 # Build settings
-markdown: kramdown
-permalink: /:year/:month/:day/:title/
+markdown:           kramdown
+paginate:           5
+paginate_path:      "/posts/page:num/"
 plugins:
   - jekyll-feed
-  - jekyll-seo-tag
-
-# Theme settings
-theme_color: "#0085A1"
-backgrounds:
-  index: "/assets/img/home-bg.jpg"
-  about: "/assets/img/about-bg.jpg"
-  contact: "/assets/img/contact-bg.jpg"
-  post: "/assets/img/post-bg.jpg"
-
-# Локальные ресурсы (заменяем CDN)
-local_resources: true
-local_bootstrap: true
-local_fontawesome: true
-local_fonts: true
-
-sass:
-  sass_dir: _sass
-  style: compressed
-
-# Defaults
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-      comments: true
-  - scope:
-      path: ""
-    values:
-      layout: "default"
+  - jekyll-paginate
+  - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site
