@@ -1,0 +1,62 @@
+/* Локальные шрифты для ускорения загрузки */
+
+/* Lora - основной шрифт */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lora Regular'), local('Lora-Regular'),
+       url('/assets/fonts/lora-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Lora Italic'), local('Lora-Italic'),
+       url('/assets/fonts/lora-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lora Bold'), local('Lora-Bold'),
+       url('/assets/fonts/lora-bold.woff2') format('woff2');
+}
+
+/* Open Sans - для заголовков */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('/assets/fonts/open-sans-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'),
+       url('/assets/fonts/open-sans-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Open Sans ExtraBold'), local('OpenSans-ExtraBold'),
+       url('/assets/fonts/open-sans-extrabold.woff2') format('woff2');
+}
+
+/* Резервные шрифты */
+body {
+  font-family: 'Lora', 'Times New Roman', serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand,
+.navbar-nav .nav-link {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
