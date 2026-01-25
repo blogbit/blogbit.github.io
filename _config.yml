@@ -4,6 +4,7 @@ description:        Всё о блокчейн, криптовалютах и т
 author:             Root
 baseurl:            ""
 url:                "https://blogbit.github.io"
+locale: "ru_RU"
 
 # Social Profiles
 twitter_username:   
