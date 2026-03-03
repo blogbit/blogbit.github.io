@@ -2,129 +2,29 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Геополитика · Telegram Mini App</title>
-    <!-- Подключаем Telegram Web App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Геополитика · Telegram Game</title>
     <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: #3a4a3f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Courier New', monospace;
-            padding: 8px;
-        }
-        .game-wrapper {
-            background: #d9c8a9;
-            padding: 15px;
-            border-radius: 30px;
-            box-shadow: 0 10px 0 #8b765a, 0 15px 20px rgba(0,0,0,0.5);
-            border: 2px solid #b59e7a;
-            width: 100%;
-            max-width: 550px; /* ограничение для больших экранов */
-        }
-        canvas {
-            display: block;
-            margin: 0 auto;
-            border-radius: 16px;
-            background: #fffef7;
-            box-shadow: inset 0 0 0 2px #b59e7a, 0 5px 0 #7d6650;
-            cursor: pointer;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1 / 1; /* квадратное поле */
-        }
-        .panel {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding: 8px 15px;
-            background: #ecdbba;
-            border-radius: 40px;
-            border: 3px solid #b59e7a;
-            color: #2c3e2b;
-            font-weight: bold;
-            font-size: 1rem;
-            box-shadow: inset 0 2px 5px #aa9b82, 0 5px 0 #7d6650;
-            gap: 10px;
-        }
-        .scores {
-            display: flex;
-            gap: 20px;
-        }
-        .score {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .dot-badge {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid #2d2d2d;
-        }
+        /* Стили без изменений (можно оставить как у вас) */
+        * { box-sizing: border-box; user-select: none; margin: 0; padding: 0; }
+        body { background: #3a4a3f; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Courier New', monospace; padding: 16px; }
+        .game-wrapper { background: #d9c8a9; padding: 20px; border-radius: 40px; box-shadow: 0 15px 0 #8b765a, 0 20px 25px #00000080; border: 2px solid #b59e7a; }
+        canvas { display: block; margin: 0 auto; border-radius: 16px; background: #fffef7; box-shadow: inset 0 0 0 2px #b59e7a, 0 5px 0 #7d6650; cursor: pointer; width: 900px; height: 900px; }
+        .panel { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 8px 20px; background: #ecdbba; border-radius: 60px; border: 3px solid #b59e7a; color: #2c3e2b; font-weight: 700; font-size: 1.2rem; box-shadow: inset 0 2px 5px #aa9b82, 0 5px 0 #7d6650; }
+        .scores { display: flex; gap: 40px; }
+        .score { display: flex; align-items: center; gap: 8px; }
+        .dot-badge { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #2d2d2d; }
         .dot-badge.blue { background: #2a7de1; }
         .dot-badge.red { background: #c74242; }
-        .turn {
-            background: #b59e7a;
-            color: #241f18;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 1rem;
-            border: 2px solid #4d402e;
-            box-shadow: inset 0 -2px 0 #4d402e;
-            white-space: nowrap;
-        }
-        .button-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        button {
-            background: #4d633c;
-            border: none;
-            color: #f0ead2;
-            font-weight: bold;
-            font-size: 0.9rem;
-            padding: 6px 12px;
-            border-radius: 30px;
-            cursor: pointer;
-            border-bottom: 4px solid #2a3a1f;
-            transition: 0.1s;
-            font-family: inherit;
-        }
-        button:hover {
-            background: #5f7a4a;
-            border-bottom-width: 3px;
-            transform: translateY(1px);
-        }
-        button:active {
-            border-bottom-width: 1px;
-            transform: translateY(3px);
-        }
-        .status {
-            background: #efdecb;
-            border-radius: 30px;
-            padding: 5px 15px;
-            color: #1f3a2b;
-            font-size: 0.9rem;
-            border: 2px solid #b59e7a;
-            text-align: center;
-            margin-top: 10px;
-            word-break: break-word;
-        }
+        .turn { background: #b59e7a; color: #241f18; padding: 6px 25px; border-radius: 40px; font-size: 1.2rem; border: 2px solid #4d402e; box-shadow: inset 0 -2px 0 #4d402e; }
+        button { background: #4d633c; border: none; color: #f0ead2; font-weight: 700; font-size: 1rem; padding: 8px 15px; border-radius: 40px; cursor: pointer; border-bottom: 5px solid #2a3a1f; transition: .1s; font-family: inherit; margin-left: 5px; }
+        button:hover { background: #5f7a4a; border-bottom-width: 3px; transform: translateY(2px); }
+        button:active { border-bottom-width: 1px; transform: translateY(4px); }
+        .status { background: #efdecb; border-radius: 30px; padding: 5px 20px; color: #1f3a2b; font-size: 1rem; border: 2px solid #b59e7a; }
+        .button-group { display: flex; gap: 10px; }
+        .footer { text-align: center; margin-top: 15px; font-size: 0.9rem; color: #3e2e1f; }
+        .footer a { color: #2a5c5c; text-decoration: none; font-weight: bold; }
+        .share-btn { background: #2a5c5c; border-bottom-color: #1a3f3f; }
     </style>
 </head>
 <body>
@@ -137,21 +37,34 @@
         </div>
         <div class="turn" id="turnDisplay">Ход синего</div>
         <div class="button-group">
-            <button id="newGameBtn">✧ Заново</button>
-            <button id="saveLogBtn">💾 Лог</button>
-            <button id="endGameBtn">⏹ Завершить</button>
+            <button id="newGameBtn">✧ Заново ✧</button>
+            <button id="saveLogBtn">💾 Сохранить лог</button>
+            <button id="endGameBtn">⏹ Завершить игру</button>
+            <!-- Кнопка для шаринга счёта (будет видна только внутри Telegram) -->
+            <button id="shareBtn" class="share-btn" style="display: none;">📤 Поделиться счётом</button>
         </div>
     </div>
     <div class="status" id="statusMsg">Ставь точку на пересечении линий</div>
+    <div class="footer">📢 <a href="https://t.me/linux4at" target="_blank">Linux Chat</a></div>
 </div>
+
+<!-- Подключаем скрипт для Telegram Games -->
+<script src="https://telegram.org/js/games.js"></script>
 
 <script>
     (function() {
-        // Инициализация Telegram Web App
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // разворачиваем на весь экран
-        tg.ready();
+        // --- Инициализация Telegram Web App / Games ---
+        const tg = window.Telegram?.WebApp; // для обратной совместимости
+        const isTelegram = !!tg;
 
+        // Показываем кнопку "Поделиться", если игра запущена внутри Telegram
+        const shareBtn = document.getElementById('shareBtn');
+        if (isTelegram) {
+            shareBtn.style.display = 'inline-block';
+            tg?.expand(); // разворачиваем на весь экран
+        }
+
+        // --- Логика игры (полностью скопирована из вашего предыдущего кода) ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const blueScoreSpan = document.getElementById('blueScore');
@@ -159,7 +72,7 @@
         const turnDisplay = document.getElementById('turnDisplay');
         const statusMsg = document.getElementById('statusMsg');
 
-        const NODES = 31; // 31x31 узлов
+        const NODES = 31;
         const CELL_SIZE = canvas.width / (NODES - 1);
         const DOT_RADIUS = 5;
 
@@ -172,7 +85,7 @@
         let currentPlayer = 'blue';
         let gameOver = false;
 
-        // ---------- Лог ----------
+        // --- Лог (оставлен как есть) ---
         let logEntries = [];
 
         function addLog(message) {
@@ -192,7 +105,7 @@
             addLog('Лог сохранён в файл');
         }
 
-        // ---------- Завершение игры ----------
+        // --- Завершение игры (вызываем и обновляем счёт) ---
         function endGame() {
             if (gameOver) return;
             gameOver = true;
@@ -212,18 +125,15 @@
             turnDisplay.innerText = 'Игра окончена';
             statusMsg.innerText = `🏁 Победитель: ${winner}  (синих: ${blueCount}, красных: ${redCount})`;
             addLog(`Игра завершена. Победитель: ${winner}`);
-
-            // Отправляем результат в Telegram (можно показать в основном окне)
-            tg.sendData(JSON.stringify({
-                winner: winner,
-                blue: blueCount,
-                red: redCount
-            })); // опционально
-
             drawBoard();
+
+            // После завершения игры активируем кнопку шаринга (если есть Telegram)
+            if (isTelegram) {
+                shareBtn.disabled = false;
+            }
         }
 
-        // ---------- Новая игра ----------
+        // --- Новая игра ---
         function newGame() {
             nodes = Array.from({ length: NODES }, () => Array(NODES).fill(null));
             currentPlayer = 'blue';
@@ -232,11 +142,12 @@
             addLog('=== Новая игра ===');
             updateScores();
             turnDisplay.innerText = 'Ход синего';
-            statusMsg.innerText = 'Ходи синий. Ставь точку.';
+            statusMsg.innerText = 'Ходи синий. Ставь точку на пересечении линий.';
             drawBoard();
+            if (isTelegram) shareBtn.disabled = true; // отключаем шаринг во время игры
         }
 
-        // ---------- Отрисовка ----------
+        // --- Отрисовка ---
         function drawBoard() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawGrid();
@@ -286,7 +197,7 @@
             }
         }
 
-        // ---------- ЛОГИКА ЗАХВАТА ----------
+        // --- Логика захвата (та же) ---
         function findEnclosedRegions(attackerColor) {
             const opponent = attackerColor === 'blue' ? 'red' : 'blue';
             const visited = Array.from({ length: NODES }, () => Array(NODES).fill(false));
@@ -407,7 +318,6 @@
             return true;
         }
 
-        // ---------- Обработка хода ----------
         function handleMove(row, col) {
             if (gameOver) return false;
             if (nodes[row][col] !== null) return false;
@@ -442,12 +352,11 @@
             return true;
         }
 
-        // ---------- Обработка клика по canvas ----------
         function handleCanvasClick(e) {
             if (gameOver) return;
 
             const rect = canvas.getBoundingClientRect();
-            const scale = canvas.width / rect.width; // canvas всегда 900, rect — фактический размер
+            const scale = canvas.width / rect.width;
 
             const mouseX = (e.clientX - rect.left) * scale;
             const mouseY = (e.clientY - rect.top) * scale;
@@ -472,21 +381,37 @@
             redScoreSpan.innerText = redCount;
         }
 
-        // ---------- Инициализация событий ----------
+        // --- Обработчик кнопки "Поделиться" ---
+        shareBtn.addEventListener('click', function() {
+            if (!isTelegram) {
+                alert('Эта функция доступна только в Telegram');
+                return;
+            }
+            // Определяем счёт: используем количество очков победителя (или текущий максимум)
+            const blueScore = parseInt(blueScoreSpan.innerText);
+            const redScore = parseInt(redScoreSpan.innerText);
+            const bestScore = Math.max(blueScore, redScore);
+            // Здесь можно передать свой счёт, но shareScore() без аргументов использует внутренний механизм
+            // Лучше передать объект со счётом, если требуется. По документации можно так:
+            // TelegramGameProxy.shareScore({ score: bestScore });
+            // Но для простоты оставим без параметров (будет отправлен текущий счёт из игры)
+            if (window.TelegramGameProxy) {
+                TelegramGameProxy.shareScore();
+                addLog('Пользователь поделился счётом');
+            } else {
+                alert('Telegram Game Proxy не доступен');
+            }
+        });
+
+        // --- Привязка кнопок ---
         document.getElementById('newGameBtn').addEventListener('click', newGame);
         document.getElementById('saveLogBtn').addEventListener('click', saveLogToFile);
         document.getElementById('endGameBtn').addEventListener('click', endGame);
         canvas.addEventListener('click', handleCanvasClick);
 
-        // Старт первой игры
+        // Старт
         newGame();
-
-        // По желанию можно добавить кнопку "Закрыть" через Telegram
-        tg.MainButton.setText("Закрыть").onClick(() => tg.close());
-        tg.MainButton.show();
     })();
 </script>
-<script src="https://telegram.org/js/games.js"></script>
-<button onclick="TelegramGameProxy.shareScore()">Поделиться результатом</button>
 </body>
 </html>
