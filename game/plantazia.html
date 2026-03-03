@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Геополитика · Захват с учётом вражеских точек</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: #3a4a3f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 16px;
+        }
+        .game-wrapper {
+            background: #d9c8a9;
+            padding: 20px;
+            border-radius: 40px;
+            box-shadow: 0 15px 0 #8b765a, 0 20px 25px rgba(0,0,0,0.5);
+            border: 2px solid #b59e7a;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 16px;
+            background: #fffef7;
+            box-shadow: inset 0 0 0 2px #b59e7a, 0 5px 0 #7d6650;
+            cursor: pointer;
+            width: 900px;
+            height: 900px;
+        }
+        .panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: #ecdbba;
+            border-radius: 60px;
+            border: 3px solid #b59e7a;
+            color: #2c3e2b;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: inset 0 2px 5px #aa9b82, 0 5px 0 #7d6650;
+        }
+        .scores {
+            display: flex;
+            gap: 40px;
+        }
+        .score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #2d2d2d;
+        }
+        .dot-badge.blue { background: #2a7de1; }
+        .dot-badge.red { background: #c74242; }
+        .turn {
+            background: #b59e7a;
+            color: #241f18;
+            padding: 6px 25px;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            border: 2px solid #4d402e;
+            box-shadow: inset 0 -2px 0 #4d402e;
+        }
+        button {
+            background: #4d633c;
+            border: none;
+            color: #f0ead2;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 8px 15px;
+            border-radius: 40px;
+            cursor: pointer;
+            border-bottom: 5px solid #2a3a1f;
+            transition: 0.1s;
+            font-family: inherit;
+            margin-left: 5px;
+        }
+        button:hover {
+            background: #5f7a4a;
+            border-bottom-width: 3px;
+            transform: translateY(2px);
+        }
+        button:active {
+            border-bottom-width: 1px;
+            transform: translateY(4px);
+        }
+        .status {
+            background: #efdecb;
+            border-radius: 30px;
+            padding: 5px 20px;
+            color: #1f3a2b;
+            font-size: 1rem;
+            border: 2px solid #b59e7a;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="game-wrapper">
+    <canvas id="gameCanvas" width="900" height="900"></canvas>
+    <div class="panel">
+        <div class="scores">
+            <div class="score"><span class="dot-badge blue"></span> <span id="blueScore">0</span></div>
+            <div class="score"><span class="dot-badge red"></span> <span id="redScore">0</span></div>
+        </div>
+        <div class="turn" id="turnDisplay">Твой ход</div>
+        <div class="button-group">
+            <button id="newGameBtn">✧ Заново ✧</button>
+            <button id="saveLogBtn">💾 Сохранить лог</button>
+            <button id="endGameBtn">⏹ Завершить игру</button>
+        </div>
+    </div>
+    <div class="status" id="statusMsg">Ставь точку на пересечении линий</div>
+</div>
+
+<script>
+    (function() {
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const blueScoreSpan = document.getElementById('blueScore');
+        const redScoreSpan = document.getElementById('redScore');
+        const turnDisplay = document.getElementById('turnDisplay');
+        const statusMsg = document.getElementById('statusMsg');
+
+        const NODES = 31; // 31x31 узлов
+        const CELL_SIZE = canvas.width / (NODES - 1);
+        const DOT_RADIUS = 5;
+
+        const PLAYER_COLORS = {
+            blue: '#2a7de1',
+            red: '#c74242'
+        };
+
+        let nodes = [];
+        let currentPlayer = 'blue';
+        let gameOver = false;
+        let computerTimeout = null;
+        let waitingForComputer = false;
+
+        // ---------- Лог ----------
+        let logEntries = [];
+
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const fullMsg = `[${timestamp}] ${message}`;
+            console.log(fullMsg);
+            logEntries.push(fullMsg);
+        }
+
+        function saveLogToFile() {
+            const content = logEntries.join('\n');
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `geopolitics_log_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.txt`;
+            link.click();
+            addLog('Лог сохранён в файл');
+        }
+
+        // ---------- Завершение игры ----------
+        function endGame() {
+            if (gameOver) return;
+            gameOver = true;
+            if (computerTimeout) {
+                clearTimeout(computerTimeout);
+                computerTimeout = null;
+            }
+            waitingForComputer = false;
+
+            // Подсчёт очков
+            let blueCount = 0, redCount = 0;
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === 'blue') blueCount++;
+                    else if (nodes[r][c] === 'red') redCount++;
+                }
+            }
+            let winner = '';
+            if (blueCount > redCount) winner = 'Синий (ты)';
+            else if (redCount > blueCount) winner = 'Красный (компьютер)';
+            else winner = 'Ничья';
+
+            turnDisplay.innerText = 'Игра окончена';
+            statusMsg.innerText = `🏁 Победитель: ${winner}  (синих: ${blueCount}, красных: ${redCount})`;
+            addLog(`Игра завершена. Победитель: ${winner}`);
+            drawBoard();
+        }
+
+        // ---------- Инициализация ----------
+        function newGame() {
+            nodes = Array.from({ length: NODES }, () => Array(NODES).fill(null));
+            currentPlayer = 'blue';
+            gameOver = false;
+            if (computerTimeout) {
+                clearTimeout(computerTimeout);
+                computerTimeout = null;
+            }
+            waitingForComputer = false;
+            logEntries = [];
+            addLog('=== Новая игра ===');
+            updateScores();
+            turnDisplay.innerText = 'Твой ход';
+            statusMsg.innerText = 'Твоя очередь. Ставь синюю точку.';
+            drawBoard();
+        }
+
+        // ---------- Отрисовка ----------
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            drawDots();
+        }
+
+        function drawGrid() {
+            ctx.lineWidth = 1;
+            for (let i = 0; i < NODES; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * CELL_SIZE, 0);
+                ctx.lineTo(i * CELL_SIZE, canvas.height);
+                ctx.strokeStyle = (i % 5 === 0) ? '#7b9ab0' : '#c0d0e0';
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, i * CELL_SIZE);
+                ctx.lineTo(canvas.width, i * CELL_SIZE);
+                ctx.strokeStyle = (i % 5 === 0) ? '#7b9ab0' : '#c0d0e0';
+                ctx.stroke();
+            }
+        }
+
+        function drawDots() {
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    const val = nodes[r][c];
+                    if (val === 'blue' || val === 'red') {
+                        const x = c * CELL_SIZE;
+                        const y = r * CELL_SIZE;
+                        ctx.beginPath();
+                        ctx.arc(x, y, DOT_RADIUS+1, 0, 2*Math.PI);
+                        ctx.fillStyle = '#fff5e6';
+                        ctx.fill();
+                        ctx.shadowColor = '#bba38b';
+                        ctx.shadowBlur = 4;
+                        ctx.beginPath();
+                        ctx.arc(x, y, DOT_RADIUS, 0, 2*Math.PI);
+                        ctx.fillStyle = PLAYER_COLORS[val];
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.strokeStyle = '#2d2d2d';
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // ---------- ЛОГИКА ЗАХВАТА (поиск замкнутых областей) ----------
+        function findEnclosedRegions(attackerColor) {
+            const opponent = attackerColor === 'blue' ? 'red' : 'blue';
+            const visited = Array.from({ length: NODES }, () => Array(NODES).fill(false));
+            const regions = [];
+
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    const cell = nodes[r][c];
+                    if ((cell === null || cell === opponent) && !visited[r][c]) {
+                        const queue = [[r, c]];
+                        const region = [];
+                        let touchesBorder = false;
+                        visited[r][c] = true;
+
+                        while (queue.length) {
+                            const [cr, cc] = queue.shift();
+                            region.push([cr, cc]);
+
+                            const neighbors = [[cr-1,cc],[cr+1,cc],[cr,cc-1],[cr,cc+1]];
+                            for (let [nr, nc] of neighbors) {
+                                if (nr < 0 || nr >= NODES || nc < 0 || nc >= NODES) {
+                                    touchesBorder = true;
+                                    continue;
+                                }
+                                const ncell = nodes[nr][nc];
+                                if (!visited[nr][nc] && (ncell === null || ncell === opponent)) {
+                                    visited[nr][nc] = true;
+                                    queue.push([nr, nc]);
+                                }
+                            }
+                        }
+
+                        if (!touchesBorder) {
+                            // Проверяем, все ли соседи снаружи — точки атакующего
+                            let surrounded = true;
+                            for (let [cr, cc] of region) {
+                                const neighbors = [[cr-1,cc],[cr+1,cc],[cr,cc-1],[cr,cc+1]];
+                                for (let [nr, nc] of neighbors) {
+                                    if (nr < 0 || nr >= NODES || nc < 0 || nc >= NODES) continue;
+                                    const ncell = nodes[nr][nc];
+                                    if (ncell !== attackerColor) {
+                                        // Проверим, не входит ли сосед в регион
+                                        let inRegion = false;
+                                        for (let [rr, cc] of region) {
+                                            if (rr === nr && cc === nc) { inRegion = true; break; }
+                                        }
+                                        if (!inRegion) {
+                                            surrounded = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!surrounded) break;
+                            }
+                            if (surrounded) {
+                                regions.push(region);
+                            }
+                        }
+                    }
+                }
+            }
+            return regions;
+        }
+
+        // Захватывает регион только если в нём есть хотя бы одна вражеская точка
+        function captureRegionIfHasEnemy(region, attackerColor) {
+            const opponent = attackerColor === 'blue' ? 'red' : 'blue';
+            let hasEnemy = false;
+            for (let [r, c] of region) {
+                if (nodes[r][c] === opponent) {
+                    hasEnemy = true;
+                    break;
+                }
+            }
+            if (!hasEnemy) {
+                addLog(`   Область без вражеских точек — пропущена`);
+                return 0;
+            }
+
+            let capturedPoints = 0;
+            for (let [r, c] of region) {
+                const cell = nodes[r][c];
+                if (cell === opponent) {
+                    nodes[r][c] = attackerColor;
+                    capturedPoints++;
+                } else if (cell === null) {
+                    nodes[r][c] = attackerColor; // пустые клетки становятся точками
+                }
+            }
+            addLog(`   Захвачена область размером ${region.length} клеток, вражеских точек: ${capturedPoints}`);
+            return capturedPoints;
+        }
+
+        function doAllCaptures(attackerColor) {
+            let totalCaptured = 0;
+            let changed;
+            let iter = 1;
+            do {
+                changed = false;
+                const regions = findEnclosedRegions(attackerColor);
+                for (let region of regions) {
+                    const captured = captureRegionIfHasEnemy(region, attackerColor);
+                    if (captured > 0) {
+                        totalCaptured += captured;
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    addLog(`--- Итерация ${iter++} захватов завершена ---`);
+                }
+            } while (changed);
+            return totalCaptured;
+        }
+
+        // ---------- Проверка на окончание игры (нет пустых клеток) ----------
+        function checkNoEmptyCells() {
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === null) return false;
+                }
+            }
+            return true;
+        }
+
+        // ---------- Ход игрока ----------
+        function playerMove(row, col) {
+            if (gameOver) return false;
+            if (currentPlayer !== 'blue') return false;
+            if (waitingForComputer) return false;
+            if (nodes[row][col] !== null) return false;
+
+            addLog(`Игрок ставит синюю точку на [${row},${col}]`);
+            nodes[row][col] = 'blue';
+            drawBoard();
+
+            const capturedPoints = doAllCaptures('blue');
+            if (capturedPoints > 0) {
+                const blueScore = parseInt(blueScoreSpan.innerText) + capturedPoints;
+                blueScoreSpan.innerText = blueScore;
+                statusMsg.innerText = `Захвачено ${capturedPoints} точек! Дополнительный ход!`;
+                turnDisplay.innerText = 'Твой ход (доп.)';
+                drawBoard();
+                // Проверяем, не заполнилось ли поле после захвата
+                if (checkNoEmptyCells()) {
+                    endGame();
+                }
+                return true;
+            }
+
+            // Проверка на заполнение поля
+            if (checkNoEmptyCells()) {
+                endGame();
+                return true;
+            }
+
+            currentPlayer = 'red';
+            turnDisplay.innerText = 'Ход компьютера';
+            statusMsg.innerText = 'Компьютер думает...';
+            drawBoard();
+            startComputerTurn();
+            return true;
+        }
+
+        // ---------- Ход компьютера ----------
+        function computerMove() {
+            if (gameOver) return;
+            if (currentPlayer !== 'red') return;
+
+            let empty = [];
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === null) empty.push([r, c]);
+                }
+            }
+
+            if (empty.length === 0) {
+                endGame();
+                return;
+            }
+
+            // Эвристика: предпочитаем клетки рядом с красными точками
+            let bestMoves = [];
+            for (let [r, c] of empty) {
+                const neighbors = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+                let redNear = false;
+                for (let [nr, nc] of neighbors) {
+                    if (nr >= 0 && nr < NODES && nc >= 0 && nc < NODES) {
+                        if (nodes[nr][nc] === 'red') {
+                            redNear = true;
+                            break;
+                        }
+                    }
+                }
+                if (redNear) bestMoves.push([r, c]);
+            }
+
+            let chosen;
+            if (bestMoves.length > 0) {
+                chosen = bestMoves[Math.floor(Math.random() * bestMoves.length)];
+            } else {
+                chosen = empty[Math.floor(Math.random() * empty.length)];
+            }
+
+            const [row, col] = chosen;
+            addLog(`Компьютер ставит красную точку на [${row},${col}]`);
+            nodes[row][col] = 'red';
+            drawBoard();
+
+            const capturedPoints = doAllCaptures('red');
+            if (capturedPoints > 0) {
+                const redScore = parseInt(redScoreSpan.innerText) + capturedPoints;
+                redScoreSpan.innerText = redScore;
+                statusMsg.innerText = `Компьютер захватил ${capturedPoints} точек! Доп. ход.`;
+                turnDisplay.innerText = 'Ход компьютера (доп.)';
+                drawBoard();
+                if (checkNoEmptyCells()) {
+                    endGame();
+                    return;
+                }
+                computerTimeout = setTimeout(() => computerMove(), 300);
+                return;
+            }
+
+            if (checkNoEmptyCells()) {
+                endGame();
+                return;
+            }
+
+            currentPlayer = 'blue';
+            turnDisplay.innerText = 'Твой ход';
+            statusMsg.innerText = 'Твоя очередь. Ставь синюю точку.';
+            waitingForComputer = false;
+            drawBoard();
+        }
+
+        function startComputerTurn() {
+            if (waitingForComputer) return;
+            waitingForComputer = true;
+            computerTimeout = setTimeout(() => {
+                computerMove();
+                waitingForComputer = false;
+            }, 300);
+        }
+
+        function updateScores() {
+            let blueCount = 0, redCount = 0;
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === 'blue') blueCount++;
+                    else if (nodes[r][c] === 'red') redCount++;
+                }
+            }
+            blueScoreSpan.innerText = blueCount;
+            redScoreSpan.innerText = redCount;
+        }
+
+        // ---------- Обработка клика ----------
+        function handleCanvasClick(e) {
+            if (gameOver) return;
+            if (currentPlayer !== 'blue') return;
+            if (waitingForComputer) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const scale = canvas.width / rect.width;
+
+            const mouseX = (e.clientX - rect.left) * scale;
+            const mouseY = (e.clientY - rect.top) * scale;
+
+            const col = Math.round(mouseX / CELL_SIZE);
+            const row = Math.round(mouseY / CELL_SIZE);
+
+            if (row >= 0 && row < NODES && col >= 0 && col < NODES) {
+                playerMove(row, col);
+            }
+        }
+
+        // ---------- Кнопки ----------
+        document.getElementById('newGameBtn').addEventListener('click', () => {
+            if (computerTimeout) {
+                clearTimeout(computerTimeout);
+                computerTimeout = null;
+            }
+            newGame();
+        });
+
+        document.getElementById('saveLogBtn').addEventListener('click', saveLogToFile);
+        document.getElementById('endGameBtn').addEventListener('click', endGame);
+
+        canvas.addEventListener('click', handleCanvasClick);
+
+        // Старт
+        newGame();
+    })();
+</script>
+</body>
+</html>
