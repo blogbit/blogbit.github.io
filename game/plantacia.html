@@ -2,12 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Геополитика · Захват с учётом вражеских точек</title>
     <style>
         * {
             box-sizing: border-box;
             user-select: none;
+            margin: 0;
+            padding: 0;
         }
         body {
             background: #3a4a3f;
@@ -16,7 +18,6 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'Courier New', monospace;
-            margin: 0;
             padding: 16px;
         }
         .game-wrapper {
@@ -25,6 +26,8 @@
             border-radius: 40px;
             box-shadow: 0 15px 0 #8b765a, 0 20px 25px rgba(0,0,0,0.5);
             border: 2px solid #b59e7a;
+            width: 100%;
+            max-width: 900px;
         }
         canvas {
             display: block;
@@ -33,11 +36,13 @@
             background: #fffef7;
             box-shadow: inset 0 0 0 2px #b59e7a, 0 5px 0 #7d6650;
             cursor: pointer;
-            width: 900px;
-            height: 900px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
         }
         .panel {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
@@ -49,6 +54,7 @@
             font-weight: bold;
             font-size: 1.2rem;
             box-shadow: inset 0 2px 5px #aa9b82, 0 5px 0 #7d6650;
+            gap: 10px;
         }
         .scores {
             display: flex;
@@ -75,6 +81,13 @@
             font-size: 1.2rem;
             border: 2px solid #4d402e;
             box-shadow: inset 0 -2px 0 #4d402e;
+            white-space: nowrap;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
         button {
             background: #4d633c;
@@ -88,7 +101,6 @@
             border-bottom: 5px solid #2a3a1f;
             transition: 0.1s;
             font-family: inherit;
-            margin-left: 5px;
         }
         button:hover {
             background: #5f7a4a;
@@ -106,10 +118,70 @@
             color: #1f3a2b;
             font-size: 1rem;
             border: 2px solid #b59e7a;
+            margin-top: 10px;
+            text-align: center;
         }
-        .button-group {
-            display: flex;
-            gap: 10px;
+
+        /* Медиа-запросы для мобильных устройств */
+        @media (max-width: 600px) {
+            .game-wrapper {
+                padding: 15px;
+            }
+            .panel {
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+            .scores {
+                gap: 20px;
+            }
+            .dot-badge {
+                width: 22px;
+                height: 22px;
+            }
+            .turn {
+                padding: 5px 18px;
+                font-size: 1rem;
+            }
+            button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-wrapper {
+                padding: 12px;
+            }
+            .panel {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .scores {
+                justify-content: center;
+            }
+            .turn {
+                text-align: center;
+                white-space: normal;
+            }
+            .button-group {
+                justify-content: center;
+            }
+            .status {
+                font-size: 0.9rem;
+                padding: 5px 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            button {
+                padding: 5px 8px;
+                font-size: 0.8rem;
+            }
+            .dot-badge {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 </head>
@@ -132,6 +204,7 @@
 </div>
 
 <script>
+    // Весь ваш JavaScript остаётся без изменений
     (function() {
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -529,7 +602,7 @@
             redScoreSpan.innerText = redCount;
         }
 
-        // ---------- Обработка клика -----------
+        // ---------- Обработка клика ----------
         function handleCanvasClick(e) {
             if (gameOver) return;
             if (currentPlayer !== 'blue') return;
