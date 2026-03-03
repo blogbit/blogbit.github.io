@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Геополитика · Telegram Mini App</title>
+    <!-- Подключаем Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #3a4a3f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            padding: 8px;
+        }
+        .game-wrapper {
+            background: #d9c8a9;
+            padding: 15px;
+            border-radius: 30px;
+            box-shadow: 0 10px 0 #8b765a, 0 15px 20px rgba(0,0,0,0.5);
+            border: 2px solid #b59e7a;
+            width: 100%;
+            max-width: 550px; /* ограничение для больших экранов */
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 16px;
+            background: #fffef7;
+            box-shadow: inset 0 0 0 2px #b59e7a, 0 5px 0 #7d6650;
+            cursor: pointer;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1; /* квадратное поле */
+        }
+        .panel {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #ecdbba;
+            border-radius: 40px;
+            border: 3px solid #b59e7a;
+            color: #2c3e2b;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 5px #aa9b82, 0 5px 0 #7d6650;
+            gap: 10px;
+        }
+        .scores {
+            display: flex;
+            gap: 20px;
+        }
+        .score {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #2d2d2d;
+        }
+        .dot-badge.blue { background: #2a7de1; }
+        .dot-badge.red { background: #c74242; }
+        .turn {
+            background: #b59e7a;
+            color: #241f18;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 1rem;
+            border: 2px solid #4d402e;
+            box-shadow: inset 0 -2px 0 #4d402e;
+            white-space: nowrap;
+        }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            background: #4d633c;
+            border: none;
+            color: #f0ead2;
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            border-bottom: 4px solid #2a3a1f;
+            transition: 0.1s;
+            font-family: inherit;
+        }
+        button:hover {
+            background: #5f7a4a;
+            border-bottom-width: 3px;
+            transform: translateY(1px);
+        }
+        button:active {
+            border-bottom-width: 1px;
+            transform: translateY(3px);
+        }
+        .status {
+            background: #efdecb;
+            border-radius: 30px;
+            padding: 5px 15px;
+            color: #1f3a2b;
+            font-size: 0.9rem;
+            border: 2px solid #b59e7a;
+            text-align: center;
+            margin-top: 10px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+<div class="game-wrapper">
+    <canvas id="gameCanvas" width="900" height="900"></canvas>
+    <div class="panel">
+        <div class="scores">
+            <div class="score"><span class="dot-badge blue"></span> <span id="blueScore">0</span></div>
+            <div class="score"><span class="dot-badge red"></span> <span id="redScore">0</span></div>
+        </div>
+        <div class="turn" id="turnDisplay">Ход синего</div>
+        <div class="button-group">
+            <button id="newGameBtn">✧ Заново</button>
+            <button id="saveLogBtn">💾 Лог</button>
+            <button id="endGameBtn">⏹ Завершить</button>
+        </div>
+    </div>
+    <div class="status" id="statusMsg">Ставь точку на пересечении линий</div>
+</div>
+
+<script>
+    (function() {
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // разворачиваем на весь экран
+        tg.ready();
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const blueScoreSpan = document.getElementById('blueScore');
+        const redScoreSpan = document.getElementById('redScore');
+        const turnDisplay = document.getElementById('turnDisplay');
+        const statusMsg = document.getElementById('statusMsg');
+
+        const NODES = 31; // 31x31 узлов
+        const CELL_SIZE = canvas.width / (NODES - 1);
+        const DOT_RADIUS = 5;
+
+        const PLAYER_COLORS = {
+            blue: '#2a7de1',
+            red: '#c74242'
+        };
+
+        let nodes = [];
+        let currentPlayer = 'blue';
+        let gameOver = false;
+
+        // ---------- Лог ----------
+        let logEntries = [];
+
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const fullMsg = `[${timestamp}] ${message}`;
+            console.log(fullMsg);
+            logEntries.push(fullMsg);
+        }
+
+        function saveLogToFile() {
+            const content = logEntries.join('\n');
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `geopolitics_log_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.txt`;
+            link.click();
+            addLog('Лог сохранён в файл');
+        }
+
+        // ---------- Завершение игры ----------
+        function endGame() {
+            if (gameOver) return;
+            gameOver = true;
+
+            let blueCount = 0, redCount = 0;
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === 'blue') blueCount++;
+                    else if (nodes[r][c] === 'red') redCount++;
+                }
+            }
+            let winner = '';
+            if (blueCount > redCount) winner = 'Синий';
+            else if (redCount > blueCount) winner = 'Красный';
+            else winner = 'Ничья';
+
+            turnDisplay.innerText = 'Игра окончена';
+            statusMsg.innerText = `🏁 Победитель: ${winner}  (синих: ${blueCount}, красных: ${redCount})`;
+            addLog(`Игра завершена. Победитель: ${winner}`);
+
+            // Отправляем результат в Telegram (можно показать в основном окне)
+            tg.sendData(JSON.stringify({
+                winner: winner,
+                blue: blueCount,
+                red: redCount
+            })); // опционально
+
+            drawBoard();
+        }
+
+        // ---------- Новая игра ----------
+        function newGame() {
+            nodes = Array.from({ length: NODES }, () => Array(NODES).fill(null));
+            currentPlayer = 'blue';
+            gameOver = false;
+            logEntries = [];
+            addLog('=== Новая игра ===');
+            updateScores();
+            turnDisplay.innerText = 'Ход синего';
+            statusMsg.innerText = 'Ходи синий. Ставь точку.';
+            drawBoard();
+        }
+
+        // ---------- Отрисовка ----------
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            drawDots();
+        }
+
+        function drawGrid() {
+            ctx.lineWidth = 1;
+            for (let i = 0; i < NODES; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * CELL_SIZE, 0);
+                ctx.lineTo(i * CELL_SIZE, canvas.height);
+                ctx.strokeStyle = (i % 5 === 0) ? '#7b9ab0' : '#c0d0e0';
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, i * CELL_SIZE);
+                ctx.lineTo(canvas.width, i * CELL_SIZE);
+                ctx.strokeStyle = (i % 5 === 0) ? '#7b9ab0' : '#c0d0e0';
+                ctx.stroke();
+            }
+        }
+
+        function drawDots() {
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    const val = nodes[r][c];
+                    if (val === 'blue' || val === 'red') {
+                        const x = c * CELL_SIZE;
+                        const y = r * CELL_SIZE;
+                        ctx.beginPath();
+                        ctx.arc(x, y, DOT_RADIUS+1, 0, 2*Math.PI);
+                        ctx.fillStyle = '#fff5e6';
+                        ctx.fill();
+                        ctx.shadowColor = '#bba38b';
+                        ctx.shadowBlur = 4;
+                        ctx.beginPath();
+                        ctx.arc(x, y, DOT_RADIUS, 0, 2*Math.PI);
+                        ctx.fillStyle = PLAYER_COLORS[val];
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                        ctx.strokeStyle = '#2d2d2d';
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // ---------- ЛОГИКА ЗАХВАТА ----------
+        function findEnclosedRegions(attackerColor) {
+            const opponent = attackerColor === 'blue' ? 'red' : 'blue';
+            const visited = Array.from({ length: NODES }, () => Array(NODES).fill(false));
+            const regions = [];
+
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    const cell = nodes[r][c];
+                    if ((cell === null || cell === opponent) && !visited[r][c]) {
+                        const queue = [[r, c]];
+                        const region = [];
+                        let touchesBorder = false;
+                        visited[r][c] = true;
+
+                        while (queue.length) {
+                            const [cr, cc] = queue.shift();
+                            region.push([cr, cc]);
+
+                            const neighbors = [[cr-1,cc],[cr+1,cc],[cr,cc-1],[cr,cc+1]];
+                            for (let [nr, nc] of neighbors) {
+                                if (nr < 0 || nr >= NODES || nc < 0 || nc >= NODES) {
+                                    touchesBorder = true;
+                                    continue;
+                                }
+                                const ncell = nodes[nr][nc];
+                                if (!visited[nr][nc] && (ncell === null || ncell === opponent)) {
+                                    visited[nr][nc] = true;
+                                    queue.push([nr, nc]);
+                                }
+                            }
+                        }
+
+                        if (!touchesBorder) {
+                            let surrounded = true;
+                            for (let [cr, cc] of region) {
+                                const neighbors = [[cr-1,cc],[cr+1,cc],[cr,cc-1],[cr,cc+1]];
+                                for (let [nr, nc] of neighbors) {
+                                    if (nr < 0 || nr >= NODES || nc < 0 || nc >= NODES) continue;
+                                    const ncell = nodes[nr][nc];
+                                    if (ncell !== attackerColor) {
+                                        let inRegion = false;
+                                        for (let [rr, cc] of region) {
+                                            if (rr === nr && cc === nc) { inRegion = true; break; }
+                                        }
+                                        if (!inRegion) {
+                                            surrounded = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!surrounded) break;
+                            }
+                            if (surrounded) {
+                                regions.push(region);
+                            }
+                        }
+                    }
+                }
+            }
+            return regions;
+        }
+
+        function captureRegionIfHasEnemy(region, attackerColor) {
+            const opponent = attackerColor === 'blue' ? 'red' : 'blue';
+            let hasEnemy = false;
+            for (let [r, c] of region) {
+                if (nodes[r][c] === opponent) {
+                    hasEnemy = true;
+                    break;
+                }
+            }
+            if (!hasEnemy) {
+                addLog(`   Область без вражеских точек — пропущена`);
+                return 0;
+            }
+
+            let capturedPoints = 0;
+            for (let [r, c] of region) {
+                const cell = nodes[r][c];
+                if (cell === opponent) {
+                    nodes[r][c] = attackerColor;
+                    capturedPoints++;
+                } else if (cell === null) {
+                    nodes[r][c] = attackerColor;
+                }
+            }
+            addLog(`   Захвачена область размером ${region.length} клеток, вражеских точек: ${capturedPoints}`);
+            return capturedPoints;
+        }
+
+        function doAllCaptures(attackerColor) {
+            let totalCaptured = 0;
+            let changed;
+            let iter = 1;
+            do {
+                changed = false;
+                const regions = findEnclosedRegions(attackerColor);
+                for (let region of regions) {
+                    const captured = captureRegionIfHasEnemy(region, attackerColor);
+                    if (captured > 0) {
+                        totalCaptured += captured;
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    addLog(`--- Итерация ${iter++} захватов завершена ---`);
+                }
+            } while (changed);
+            return totalCaptured;
+        }
+
+        function checkNoEmptyCells() {
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === null) return false;
+                }
+            }
+            return true;
+        }
+
+        // ---------- Обработка хода ----------
+        function handleMove(row, col) {
+            if (gameOver) return false;
+            if (nodes[row][col] !== null) return false;
+
+            const playerColor = currentPlayer;
+            addLog(`Игрок ${playerColor === 'blue' ? 'синий' : 'красный'} ставит точку на [${row},${col}]`);
+            nodes[row][col] = playerColor;
+            drawBoard();
+
+            const capturedPoints = doAllCaptures(playerColor);
+            if (capturedPoints > 0) {
+                if (playerColor === 'blue') {
+                    const blueScore = parseInt(blueScoreSpan.innerText) + capturedPoints;
+                    blueScoreSpan.innerText = blueScore;
+                } else {
+                    const redScore = parseInt(redScoreSpan.innerText) + capturedPoints;
+                    redScoreSpan.innerText = redScore;
+                }
+                statusMsg.innerText = `Захвачено ${capturedPoints} точек! Дополнительный ход!`;
+                turnDisplay.innerText = `Ход ${playerColor === 'blue' ? 'синего' : 'красного'} (доп.)`;
+            } else {
+                currentPlayer = (playerColor === 'blue' ? 'red' : 'blue');
+                turnDisplay.innerText = `Ход ${currentPlayer === 'blue' ? 'синего' : 'красного'}`;
+                statusMsg.innerText = `Ходи ${currentPlayer === 'blue' ? 'синий' : 'красный'}`;
+            }
+
+            if (checkNoEmptyCells()) {
+                endGame();
+            }
+
+            drawBoard();
+            return true;
+        }
+
+        // ---------- Обработка клика по canvas ----------
+        function handleCanvasClick(e) {
+            if (gameOver) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const scale = canvas.width / rect.width; // canvas всегда 900, rect — фактический размер
+
+            const mouseX = (e.clientX - rect.left) * scale;
+            const mouseY = (e.clientY - rect.top) * scale;
+
+            const col = Math.round(mouseX / CELL_SIZE);
+            const row = Math.round(mouseY / CELL_SIZE);
+
+            if (row >= 0 && row < NODES && col >= 0 && col < NODES) {
+                handleMove(row, col);
+            }
+        }
+
+        function updateScores() {
+            let blueCount = 0, redCount = 0;
+            for (let r = 0; r < NODES; r++) {
+                for (let c = 0; c < NODES; c++) {
+                    if (nodes[r][c] === 'blue') blueCount++;
+                    else if (nodes[r][c] === 'red') redCount++;
+                }
+            }
+            blueScoreSpan.innerText = blueCount;
+            redScoreSpan.innerText = redCount;
+        }
+
+        // ---------- Инициализация событий ----------
+        document.getElementById('newGameBtn').addEventListener('click', newGame);
+        document.getElementById('saveLogBtn').addEventListener('click', saveLogToFile);
+        document.getElementById('endGameBtn').addEventListener('click', endGame);
+        canvas.addEventListener('click', handleCanvasClick);
+
+        // Старт первой игры
+        newGame();
+
+        // По желанию можно добавить кнопку "Закрыть" через Telegram
+        tg.MainButton.setText("Закрыть").onClick(() => tg.close());
+        tg.MainButton.show();
+    })();
+</script>
+</body>
+</html>
